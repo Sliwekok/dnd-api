@@ -10,6 +10,9 @@
     #[MongoDB\Document]
     class Race
     {
+	    #[MongoDB\Id]
+	    private string $id;
+
 	    #[MongoDB\Field(type: "string")]
 	    private string $name;
 

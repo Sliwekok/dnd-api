@@ -7,18 +7,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends AbstractController
+class ApiController extends AbstractController
 {
-	#[Route('/', name: 'index')]
-	public function index(
-		Request     $request
-	): Response {
-
-		return $this->render('index.html.twig', []);
-	}
-
-	#[Route('/', name: 'home')]
-	public function home(
+	#[Route('/', name: 'api')]
+	public function api (
 		Request     $request
 	): Response {
 
