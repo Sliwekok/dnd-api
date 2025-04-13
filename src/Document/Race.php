@@ -17,11 +17,10 @@
 	    private string $name;
 
 	    #[MongoDB\Field(type: "string")]
-	    private string $description;
+	    private string $nameGeneric;
 
-	    // For example: ['str' => 1, 'cha' => 2]
-	    #[MongoDB\Field(type: "hash")]
-	    private array $abilityScoreIncreases = [];
+	    #[MongoDB\Field(type: "string")]
+	    private string $description;
 
 	    // For example: ['Darkvision', 'Fey Ancestry']
 	    #[MongoDB\Field(type: "collection")]
@@ -39,6 +38,12 @@
 	    #[MongoDB\EmbedMany(targetDocument: Subrace::class)]
 	    private iterable $subraces = [];
 
+		#[MongoDB\Field(type: "string")]
+		private string $type;
+
+	    #[MongoDB\Field(type: "string")]
+	    private string $size;
+
 	    public function getName(): string
 	    {
 		    return $this->name;
@@ -50,6 +55,17 @@
 		    return $this;
 	    }
 
+	    public function getNameGeneric(): string
+	    {
+		    return $this->nameGeneric;
+	    }
+
+	    public function setNameGeneric(string $nameGeneric): self
+	    {
+		    $this->nameGeneric = $nameGeneric;
+		    return $this;
+	    }
+
 	    public function getDescription(): string
 	    {
 		    return $this->description;
@@ -58,17 +74,6 @@
 	    public function setDescription(string $description): self
 	    {
 		    $this->description = $description;
-		    return $this;
-	    }
-
-	    public function getAbilityScoreIncreases(): array
-	    {
-		    return $this->abilityScoreIncreases;
-	    }
-
-	    public function setAbilityScoreIncreases(array $scores): self
-	    {
-		    $this->abilityScoreIncreases = $scores;
 		    return $this;
 	    }
 
@@ -115,4 +120,15 @@
 		    $this->subraces[] = $subrace;
 		    return $this;
 	    }
+
+		public function getSize(): string
+		{
+			return $this->size;
+		}
+
+		public function setSize(string $size): self
+		{
+			$this->size = $size;
+			return $this;
+		}
     }
