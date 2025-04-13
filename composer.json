@@ -16,7 +16,8 @@
         "symfony/twig-bundle": "7.2.*",
         "symfony/webapp-pack": "*",
         "symfony/webpack-encore-bundle": "*",
-        "symfony/yaml": "7.2.*"
+        "symfony/yaml": "7.2.*",
+      "ext-mongodb": "*"
     },
     "config": {
         "allow-plugins": {
