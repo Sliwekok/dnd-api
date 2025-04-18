@@ -8,17 +8,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-#[Route('/api/2024/race')]
+#[Route('/api/2024/class')]
 
-class RaceController extends AbstractController {
+class ClassController extends AbstractController {
 
-	#[Route('/', name: '2024_api_race_list', methods: ['GET'])]
+	#[Route('/', name: '2024_api_class_list', methods: ['GET'])]
 	public function getList(Request $request): JsonResponse {
 		return $this->json(['test' => 'test']);
 	}
 
-    #[Route('/{race}', name: '2024_api_race_details', methods: ['GET'])]
-    public function details(Request $request, string $race): JsonResponse {
-        return $this->json(['test' => $race]);
+    #[Route('/{class}', name: '2024_api_class_details', methods: ['GET'])]
+    public function details(Request $request, string $class): JsonResponse {
+        return $this->json(['test' => $class]);
     }
 }
