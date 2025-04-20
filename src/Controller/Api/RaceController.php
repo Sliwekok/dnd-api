@@ -30,9 +30,4 @@ class RaceController extends AbstractController {
 		$races = $this->dm->getRepository(Race::class)->findBy(['nameGeneric' => $race]);
 		return $this->json($races, HttpCodesInterface::SUCCESS);
 	}
-
-    #[Route('/{race}', name: '2024_api_race_details', methods: ['GET'])]
-    public function details(Request $request, string $race): JsonResponse {
-        return $this->json(['test' => $race]);
-    }
 }
