@@ -31,4 +31,8 @@ class RaceController extends AbstractController {
 		return $this->json($races, HttpCodesInterface::SUCCESS);
 	}
 
+    #[Route('/{race}', name: '2024_api_race_details', methods: ['GET'])]
+    public function details(Request $request, string $race): JsonResponse {
+        return $this->json(['test' => $race]);
+    }
 }
