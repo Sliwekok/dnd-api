@@ -1,0 +1,17 @@
+#admin-form {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  background: hsla(0, 0%, 49%, 1);
+  background: linear-gradient(180deg, hsla(0, 0%, 49%, 1) 0%, hsla(205, 54%, 7%, 1) 100%);
+  background: -moz-linear-gradient(180deg, hsla(0, 0%, 49%, 1) 0%, hsla(205, 54%, 7%, 1) 100%);
+  background: -webkit-linear-gradient(180deg, hsla(0, 0%, 49%, 1) 0%, hsla(205, 54%, 7%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#7D7D7D", endColorstr="#08131B", GradientType=1 );
+  z-index: 1000;
+}

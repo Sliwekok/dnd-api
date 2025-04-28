@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Backend {% block title %}{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+
+    <form id="admin-form">
+        <h3>Enter Password</h3>
+        <input type="password" id="password" class="form-control">
+        <button>Submit</button>
+    </form>
+
+    {% block body %}
+    {% endblock %}
+
+
+<script>
+    let Cookies = {
+        get: function(name) {
+            let value = "; " + document.cookie;
+            let parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        },
+        set: function(name, value, hours) {
+            let expires = "";
+            if (hours) {
+                let date = new Date();
+                date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+    };
+
+    if (Cookies.get('admin') === undefined) {
+        document.getElementById('admin-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const password = document.getElementById('password').value;
+
+            fetch('/backend/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password: password }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.valid) {
+                        Cookies.set('admin', 'true', 1);
+                        location.reload();
+                    } else {
+                        alert('Invalid password');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while validating the password.');
+                });
+        });
+    } else {
+        document.getElementById('password').style.display = 'none';
+    }
+</script>
+</body>
+</html>
