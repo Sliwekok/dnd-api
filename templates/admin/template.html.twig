@@ -12,6 +12,56 @@
         {{ encore_entry_script_tags('app') }}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
+
+    <script>
+        let Cookies = {
+            get: function(name) {
+                let value = "; " + document.cookie;
+                let parts = value.split("; " + name + "=");
+                if (parts.length === 2) return parts.pop().split(";").shift();
+            },
+            set: function(name, value, hours) {
+                let expires = "";
+                if (hours) {
+                    let date = new Date();
+                    date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+        };
+
+        if (Cookies.get('admin') === undefined) {
+            document.getElementById('content').innerHTML = ''; // hide content of page
+            document.getElementById('admin-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const password = document.getElementById('password').value;
+
+                fetch('/backend/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password: password }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.valid) {
+                            Cookies.set('admin', 'true', 1);
+                            location.reload();
+                        } else {
+                            alert('Invalid password');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while validating the password.');
+                    });
+            });
+        } else {
+            document.getElementById('password').style.display = 'none';
+        }
+    </script>
 </head>
 <body>
 
@@ -21,57 +71,12 @@
         <button>Submit</button>
     </form>
 
-    {% block body %}
-    {% endblock %}
+    <div id="content">
+        {{ include('admin/menu.html.twig') }}
 
+        {% block content %}
+        {% endblock %}
+    </div>
 
-<script>
-    let Cookies = {
-        get: function(name) {
-            let value = "; " + document.cookie;
-            let parts = value.split("; " + name + "=");
-            if (parts.length === 2) return parts.pop().split(";").shift();
-        },
-        set: function(name, value, hours) {
-            let expires = "";
-            if (hours) {
-                let date = new Date();
-                date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "") + expires + "; path=/";
-        }
-    };
-
-    if (Cookies.get('admin') === undefined) {
-        document.getElementById('admin-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const password = document.getElementById('password').value;
-
-            fetch('/backend/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ password: password }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.valid) {
-                        Cookies.set('admin', 'true', 1);
-                        location.reload();
-                    } else {
-                        alert('Invalid password');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while validating the password.');
-                });
-        });
-    } else {
-        document.getElementById('password').style.display = 'none';
-    }
-</script>
 </body>
 </html>
