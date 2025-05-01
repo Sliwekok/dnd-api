@@ -60,7 +60,10 @@ class BackendController extends AbstractController
     public function login(
         Request     $request
     ): JsonResponse {
-        if ($request->request->get('password') == $_ENV['ADMIN_PASSWORD']) {
+	    $data = json_decode($request->getContent(), true);
+	    $password = $data['password'] ?? '';
+
+        if ($password === $_ENV['ADMIN_PASSWORD']) {
             $this->addFlash('success', 'Login successful');
         } else {
             $this->addFlash('error', 'Invalid password');

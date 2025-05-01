@@ -1,22 +1,22 @@
-<nav>
+<nav id="admin-nav">
     <ul>
         <li>Menu</li>
 
         <li class="collapsible">
             Add new
             <ul class="submenu">
-                <li><a href="{{ url('backend_add', paremeters = {type: 'spell'}) }}">Spell</a></li>
-                <li><a href="{{ url('backend_add', paremeters = {type: 'race'}) }}">Race</a></li>
-                <li><a href="{{ url('backend_add', paremeters = {type: 'class'}) }}">Class</a></li>
+                <li><a href="{{ url('backend_add', {type: 'spell'}) }}">Spell</a></li>
+                <li><a href="{{ url('backend_add', {type: 'race'}) }}">Race</a></li>
+                <li><a href="{{ url('backend_add', {type: 'class'}) }}">Class</a></li>
             </ul>
         </li>
 
         <li class="collapsible">
             Browse
             <ul class="submenu">
-                <li><a href="{{ url('backend_browse', paremeters = {type: 'spell'}) }}">Spell</a></li>
-                <li><a href="{{ url('backend_browse', paremeters = {type: 'race'}) }}">Race</a></li>
-                <li><a href="{{ url('backend_browse', paremeters = {type: 'class'}) }}">Class</a></li>
+                <li><a href="{{ url('backend_browse', {type: 'spell'}) }}">Spell</a></li>
+                <li><a href="{{ url('backend_browse', {type: 'race'}) }}">Race</a></li>
+                <li><a href="{{ url('backend_browse', {type: 'class'}) }}">Class</a></li>
             </ul>
         </li>
     </ul>
