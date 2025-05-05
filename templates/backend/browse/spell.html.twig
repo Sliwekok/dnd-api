@@ -29,7 +29,7 @@
             </tr>
             <tr class="details">
                 <td colspan="5">
-                    <p><b>School:</b> {{ item.school }}</p>
+                    <p><b>School:</b> {{ item.school|capitalize }}</p>
                     <p><b>Range:</b> {{ item.range }} feet</p>
                     <p><b>Components:</b>
                         {% for component in item.components %}
