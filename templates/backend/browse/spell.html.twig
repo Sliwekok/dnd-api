@@ -2,17 +2,17 @@
 
 {% block content %}
 
-    <h1>D&D 2024 Spell List</h1>
+    <h1 class="text-golden">D&D 2024 Spell List</h1>
 
     <table id="spellTable">
         <thead>
-        <tr>
-            <th class="sortable" data-sort="name">Name</th>
-            <th class="sortable" data-sort="level">Level</th>
-            <th class="sortable" data-sort="classes">Classes</th>
-            <th class="sortable" data-sort="action">Action Type</th>
-            <th></th>
-        </tr>
+            <tr>
+                <th class="sortable" data-sort="name">Name</th>
+                <th class="sortable" data-sort="level">Level</th>
+                <th class="sortable" data-sort="classes">Classes</th>
+                <th class="sortable" data-sort="action">Action Type</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
         {% for item in items %}

@@ -1,3 +1,3 @@
 import './styles/app.scss';
 
-require('./backend');
+// require('./backend');
