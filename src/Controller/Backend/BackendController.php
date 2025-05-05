@@ -2,6 +2,9 @@
 
 namespace App\Controller\Backend;
 
+use App\Document\Spell;
+use App\Form\SpellAddFormType;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,49 +14,65 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/backend')]
 class BackendController extends AbstractController
 {
-	#[Route('/', name: 'backend_index')]
+	#[Route('/', name: 'backend_index', methods: ['GET'])]
 	public function index(
-		Request     $request
 	): Response {
-
-		return $this->render('admin/index.html.twig', []);
+		return $this->render('backend/index.html.twig', []);
 	}
 
-	#[Route('/add/{type}', name: 'backend_add')]
+	#[Route('/add/{type}', name: 'backend_add', methods: ['GET', 'POST'])]
 	public function add(
-		Request     $request,
-        string      $type
+		Request         $request,
+        string          $type,
+        DocumentManager $dm
 	): Response {
-        $page = match ($type) {
-            'spell' => 'backend/add/spell.twig.html',
-            'race'  => 'backend/add/race.twig.html',
-            'class' => 'backend/add/class.twig.html',
-            default => throw new \InvalidArgumentException('Invalid type'),
-        };
-
-
-        if ($request->getMethod() === 'POST') {
-//            if ()
-
-            $data = $request->request->all();
+        switch ($type) {
+            case 'spell':
+                $item = new Spell();
+                $page = 'backend/add/spell.html.twig';
+                $form = $this->createForm(SpellAddFormType::class, $item);
+                break;
+            default:
+                throw new \InvalidArgumentException('Invalid type');
         }
 
-		return $this->render($page, []);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $dm->persist($item);
+                $dm->flush();
+
+                $this->addFlash('success', 'Item added successfully!');
+
+                return $this->redirectToRoute('backend_add', ['type' => $type]);
+            } else {
+                $this->addFlash('error', 'There were errors in the form. Please fix them.');
+            }
+        }
+		return $this->render($page, [
+            'form' => $form
+        ]);
 	}
 
-    #[Route('/browse/{type}', name: 'backend_browse')]
+    #[Route('/browse/{type}', name: 'backend_browse', methods: ['GET', 'POST'])]
     public function browse(
-        Request     $request,
-        string      $type
-    ): Response {
-        $page = match ($type) {
-            'spell' => 'backend/browse/spell.twig.html',
-            'race'  => 'backend/browse/race.twig.html',
-            'class' => 'backend/browse/class.twig.html',
-            default => throw new \InvalidArgumentException('Invalid type'),
-        };
+        DocumentManager $dm,
+        string          $type
+    ): Response
+    {
+        switch ($type) {
+            case 'spell':
+                $items = $dm->getRepository(Spell::class)->findAll();
+                $page = 'backend/browse/spell.html.twig';
+                break;
+            default:
+                throw new \InvalidArgumentException('Invalid type');
+        }
 
-        return $this->render($page, []);
+        return $this->render($page, [
+            'items' => $items
+        ]);
     }
 
     #[Route('/login', name: 'login', methods: ['POST'])]
@@ -79,12 +98,12 @@ class BackendController extends AbstractController
         ], Response::HTTP_OK);
     }
 
-    #[Route('/home', name: 'home')]
+    #[Route('/home', name: 'home', methods: ['GET'])]
     public function home(
         Request     $request
     ): Response {
 
-        return $this->render('admin/add.html.twig', []);
+        return $this->render('backend/add.html.twig', []);
     }
 
 }

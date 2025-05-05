@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\v2024;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/api/2024/class')]
 

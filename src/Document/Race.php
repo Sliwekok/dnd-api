@@ -2,8 +2,6 @@
 
 namespace App\Document;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 #[MongoDB\Document(collection: 'Race')]
@@ -114,7 +112,7 @@ class Race
 	    return $this->subrace;
     }
 
-    public function addSubrace(array $subrace): array
+    public function addSubrace(array $subrace): self
     {
 	    $this->subrace = $subrace;
 	    return $this;

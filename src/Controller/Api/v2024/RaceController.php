@@ -1,15 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\v2024;
 
 use App\Document\Race;
 use App\UniqueNameInterface\HttpCodesInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api/2024/race')]
 

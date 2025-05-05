@@ -1,0 +1,61 @@
+{% extends('backend/template.html.twig') %}
+
+{% block content %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form) }}
+        <h2>Add a New Spell</h2>
+
+        <label>{{ form_label(form.name) }}</label>
+        {{ form_widget(form.name) }}<br><br>
+
+        <label>{{ form_label(form.level) }}</label>
+        {{ form_widget(form.level) }}<br><br>
+
+        <label>{{ form_label(form.school) }}</label>
+        {{ form_widget(form.school) }}<br><br>
+
+        <label>{{ form_label(form.actionType) }}</label>
+        {{ form_widget(form.actionType) }}<br><br>
+
+        <label>{{ form_label(form.range) }}</label>
+        {{ form_widget(form.range) }}<br><br>
+
+        <fieldset>
+            <legend>{{ form_label(form.components) }}</legend>
+            {{ form_widget(form.components) }}
+        </fieldset><br>
+
+        <label>{{ form_label(form.duration) }}</label>
+        {{ form_widget(form.duration) }}<br><br>
+
+        <label>{{ form_widget(form.concentration) }} Requires Concentration</label><br>
+        <label>{{ form_widget(form.ritual) }} Ritual Spell</label><br><br>
+
+        <label>{{ form_label(form.description) }}</label><br>
+        {{ form_widget(form.description) }}<br><br>
+
+        <label>{{ form_label(form.classes) }}</label>
+        {{ form_widget(form.classes) }}<br><br>
+
+        <button type="submit">Add Spell</button>
+
+    {{ form_end(form) }}
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: 'Choose classes',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+
+
+{% endblock %}

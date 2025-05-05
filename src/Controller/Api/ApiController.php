@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
-	#[Route('/', name: 'api')]
+	#[Route('/', name: 'api', methods: ['GET'])]
 	public function api (
 		Request     $request
 	): Response {

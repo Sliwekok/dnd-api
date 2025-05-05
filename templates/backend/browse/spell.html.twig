@@ -1,0 +1,84 @@
+{% extends('backend/template.html.twig') %}
+
+{% block content %}
+
+    <h1>D&D 2024 Spell List</h1>
+
+    <table id="spellTable">
+        <thead>
+        <tr>
+            <th class="sortable" data-sort="name">Name</th>
+            <th class="sortable" data-sort="level">Level</th>
+            <th class="sortable" data-sort="classes">Classes</th>
+            <th class="sortable" data-sort="action">Action Type</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr class="spell-row">
+                <td class="spell-name">{{ item.name }}</td>
+                <td>{{ item.level }}</td>
+                <td>
+                    {% for class in item.classes %}
+                        {{ class|capitalize }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ item.actionType }}</td>
+                <td><span class="expand-btn">Show</span></td>
+            </tr>
+            <tr class="details">
+                <td colspan="5">
+                    <p><b>School:</b> {{ item.school }}</p>
+                    <p><b>Range:</b> {{ item.range }} feet</p>
+                    <p><b>Components:</b>
+                        {% for component in item.components %}
+                            {{ component|capitalize }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><b>Duration:</b> {{ item.duration }}</p>
+                    <p><b>Description:</b> {{ item.description }}</p>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // Expand/collapse logic
+        $('.expand-btn').on('click', function () {
+            const $btn = $(this);
+            const $details = $btn.closest('tr').next('.details');
+            $details.slideToggle(200);
+            $btn.text($btn.text() === 'Show' ? 'Hide' : 'Show');
+        });
+
+        // Sort logic
+        $('.sortable').on('click', function () {
+            const $th = $(this);
+            const index = $th.index();
+            const table = $('#spellTable tbody');
+            const rows = table.find('tr.spell-row').toArray();
+
+            const sortKey = $th.data('sort');
+            const asc = !$th.data('asc');
+            $th.data('asc', asc);
+
+            rows.sort((a, b) => {
+                const aText = $(a).children().eq(index).text().toLowerCase();
+                const bText = $(b).children().eq(index).text().toLowerCase();
+                return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+            });
+
+            table.empty();
+            rows.forEach(row => {
+                const $row = $(row);
+                const $details = $row.next('.details');
+                table.append($row);
+                table.append($details);
+            });
+        });
+    </script>
+
+
+{% endblock %}
