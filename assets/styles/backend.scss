@@ -247,6 +247,21 @@ nav#admin-nav {
     display: inline-block;
     margin-right: 15px;
   }
+
+  #componentsGrouped  {
+    display: inline-flex;
+    width: 100%;
+
+    #spell_add_form_components {
+      width: 30% !important;
+    }
+
+    #spell_add_form_componentMaterial {
+      width: 50% !important;
+      margin-left: 0;
+    }
+  }
+
 }
 
 #spellTable {
@@ -289,6 +304,14 @@ nav#admin-nav {
   .expand-btn {
     cursor: pointer;
     color: #89cfff;
+  }
+
+  span.accepted {
+    color: #4CAF50;
+  }
+
+  span.rejected {
+    color: #f44336;
   }
 
   .sortable::after {

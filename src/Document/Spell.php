@@ -13,6 +13,9 @@ class Spell
     #[ODM\Field(type: 'string')]
     private string $name;
 
+	#[ODM\Field(type: 'string')]
+	private string $nameGeneric;
+
     #[ODM\Field(type: 'int')]
     private int $level;
 
@@ -31,7 +34,10 @@ class Spell
     #[ODM\Field(type: 'collection')]
     private array $components = [];
 
-    #[ODM\Field(type: 'string')]
+	#[ODM\Field(type: 'string')]
+	private ?string $componentMaterial = null;
+
+	#[ODM\Field(type: 'string')]
     private string $description;
 
     #[ODM\Field(type: 'collection')]
@@ -42,6 +48,9 @@ class Spell
 
     #[ODM\Field(type: 'bool')]
     private bool $ritual = false;
+
+	#[ODM\Field(type: 'bool')]
+	private bool $accepted = false;
 
     public function getId(): ?string
     {
@@ -58,6 +67,17 @@ class Spell
         $this->name = $name;
         return $this;
     }
+
+	public function getNameGeneric(): string
+	{
+		return $this->nameGeneric;
+	}
+
+	public function setNameGeneric(string $nameGeneric): self
+	{
+		$this->nameGeneric = $nameGeneric;
+		return $this;
+	}
 
     public function getLevel(): int
     {
@@ -179,4 +199,26 @@ class Spell
         $this->ritual = $ritual;
         return $this;
     }
+
+	public function getComponentMaterial(): ?string
+	{
+		return $this->componentMaterial;
+	}
+
+	public function setComponentMaterial(string $componentMaterial): self
+	{
+		$this->componentMaterial = $componentMaterial;
+		return $this;
+	}
+
+	public function isAccepted(): bool
+	{
+		return $this->accepted;
+	}
+
+	public function setAccepted (bool $accepted): self
+	{
+		$this->accepted = $accepted;
+		return $this;
+	}
 }

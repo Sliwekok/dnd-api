@@ -71,9 +71,9 @@ class SpellAddFormType extends AbstractType
             ->add('components', ChoiceType::class, [
                 'label' => 'Components',
                 'choices' => [
-                    'Verbal (V)' => 'v',
-                    'Somatic (S)' => 's',
-                    'Material (M)' => 'm',
+                    'Verbal (V)' => 'V',
+                    'Somatic (S)' => 'S',
+                    'Material (M)' => 'M',
                 ],
                 'expanded' => true,
                 'multiple' => true,
@@ -82,6 +82,14 @@ class SpellAddFormType extends AbstractType
                     'class' => 'inline-checkboxes'
                 ],
             ])
+	        ->add('componentMaterial', TextType::class, [
+		        'label' => 'Component Material',
+		        'required' => false,
+		        'attr' => [
+			        'placeholder' => 'e.g. a small piece of iron or a pinch of powdered iron',
+			        'class' => 'componentMaterial'
+		        ]
+	        ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description & Effects',
                 'required' => true,

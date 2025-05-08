@@ -11,6 +11,7 @@
                 <th class="sortable" data-sort="level">Level</th>
                 <th class="sortable" data-sort="classes">Classes</th>
                 <th class="sortable" data-sort="action">Action Type</th>
+                <th class="sortable" data-sort="accepted">Accepted</th>
                 <th></th>
             </tr>
         </thead>
@@ -24,7 +25,14 @@
                         {{ class|capitalize }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </td>
-                <td>{{ item.actionType }}</td>
+                <td>{{ item.actionType|capitalize }}</td>
+                <td>
+                    {% if item.accepted %}
+                        <span class="accepted">Yes</span>
+                    {% else %}
+                        <span class="rejected">No</span>
+                    {% endif %}
+                </td>
                 <td><span class="expand-btn">Show</span></td>
             </tr>
             <tr class="details">
@@ -33,11 +41,15 @@
                     <p><b>Range:</b> {{ item.range }} feet</p>
                     <p><b>Components:</b>
                         {% for component in item.components %}
-                            {{ component|capitalize }}{% if not loop.last %}, {% endif %}
+                            {{ component }}{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </p>
+                    {% if item.componentMaterial is defined and item.componentMaterial is not null %}
+                        <p><b>Component Material:</b> {{ item.componentMaterial }}</p>
+                    {% endif %}
                     <p><b>Duration:</b> {{ item.duration }}</p>
                     <p><b>Description:</b> {{ item.description }}</p>
+                    <p><a href="{{ url('backend_edit', {name: item.nameGeneric}) }}">Edit</a></p>
                 </td>
             </tr>
         {% endfor %}
@@ -45,37 +57,37 @@
     </table>
 
     <script>
-        // Expand/collapse logic
-        $('.expand-btn').on('click', function () {
+        $(document).on('click', '.expand-btn', function () {
             const $btn = $(this);
             const $details = $btn.closest('tr').next('.details');
             $details.slideToggle(200);
             $btn.text($btn.text() === 'Show' ? 'Hide' : 'Show');
         });
 
-        // Sort logic
         $('.sortable').on('click', function () {
             const $th = $(this);
             const index = $th.index();
             const table = $('#spellTable tbody');
-            const rows = table.find('tr.spell-row').toArray();
-
-            const sortKey = $th.data('sort');
             const asc = !$th.data('asc');
             $th.data('asc', asc);
 
-            rows.sort((a, b) => {
-                const aText = $(a).children().eq(index).text().toLowerCase();
-                const bText = $(b).children().eq(index).text().toLowerCase();
+            const pairs = [];
+            table.find('tr.spell-row').each(function () {
+                const $row = $(this);
+                const $details = $row.next('.details');
+                pairs.push([$row, $details]);
+            });
+
+            pairs.sort((a, b) => {
+                const aText = a[0].children().eq(index).text().toLowerCase();
+                const bText = b[0].children().eq(index).text().toLowerCase();
                 return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
             });
 
             table.empty();
-            rows.forEach(row => {
-                const $row = $(row);
-                const $details = $row.next('.details');
-                table.append($row);
-                table.append($details);
+            pairs.forEach(([row, details]) => {
+                table.append(row);
+                table.append(details);
             });
         });
     </script>

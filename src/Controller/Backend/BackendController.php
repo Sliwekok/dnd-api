@@ -75,6 +75,41 @@ class BackendController extends AbstractController
         ]);
     }
 
+	#[Route('/edit/{name}', name: 'backend_edit', methods: ['GET', 'POST'])]
+	public function edit(
+		Request         $request,
+		string          $name,
+		DocumentManager $dm
+	): Response {
+		$item = $dm->getRepository(Spell::class)->findOneBy(['nameGeneric' => $name]);
+
+		if (!$item) {
+			throw $this->createNotFoundException('Item not found');
+		}
+
+		$form = $this->createForm(SpellAddFormType::class, $item);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted()) {
+			if ($form->isValid()) {
+				$formData = $form->getData();
+				$formData->setAccepted(true);
+
+				$dm->flush();
+
+				$this->addFlash('success', 'Item updated successfully!');
+
+				return $this->redirectToRoute('backend_browse', ['type' => 'spell']);
+			} else {
+				$this->addFlash('error', 'There were errors in the form. Please fix them.');
+			}
+		}
+
+		return $this->render('backend/add/spell.html.twig', [
+			'form' => $form
+		]);
+	}
+
     #[Route('/login', name: 'login', methods: ['POST'])]
     public function login(
         Request     $request

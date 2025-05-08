@@ -26,9 +26,10 @@
         <label>{{ form_label(form.range) }}</label>
         {{ form_widget(form.range) }}<br><br>
 
-        <fieldset>
+        <fieldset id="componentsGrouped">
             <legend>{{ form_label(form.components) }}</legend>
             {{ form_widget(form.components) }}
+            {{ form_widget(form.componentMaterial) }}
         </fieldset><br>
 
         <label>{{ form_label(form.duration) }}</label>
