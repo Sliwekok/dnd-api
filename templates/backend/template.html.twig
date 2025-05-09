@@ -28,7 +28,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {# SELECT2 #}
 </head>
-<body>
+<body id="backend">
 
     <div id="admin-header">
         <form id="admin-form">
@@ -99,6 +99,19 @@
             document.getElementById('admin-header').style.display = 'none';
         }
     })();
+
+    setTimeout(() => {
+        let flashMessages = $('.flash-message');
+        if (flashMessages.length) {
+            flashMessages.each(function () {
+                let message = $(this);
+                message.fadeIn(500).delay(10000).fadeOut(500, function () {
+                    message.remove();
+                });
+            });
+        }
+    });
+
 </script>
 
 </html>

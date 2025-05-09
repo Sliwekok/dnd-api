@@ -37,18 +37,18 @@
             </tr>
             <tr class="details">
                 <td colspan="5">
-                    <p><b>School:</b> {{ item.school|capitalize }}</p>
-                    <p><b>Range:</b> {{ item.range }} feet</p>
-                    <p><b>Components:</b>
+                    <p><span class="text-bold">School:</span> {{ item.school|capitalize }}</p>
+                    <p><span class="text-bold">Range:</span> {{ item.range }} feet</p>
+                    <p><span class="text-bold">Components:</span>
                         {% for component in item.components %}
                             {{ component }}{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </p>
                     {% if item.componentMaterial is defined and item.componentMaterial is not null %}
-                        <p><b>Component Material:</b> {{ item.componentMaterial }}</p>
+                        <p><span class="text-bold">Component Material:</span> {{ item.componentMaterial }}</p>
                     {% endif %}
-                    <p><b>Duration:</b> {{ item.duration }}</p>
-                    <p><b>Description:</b> {{ item.description }}</p>
+                    <p><span class="text-bold">Duration:</span> {{ item.duration }}</p>
+                    <p><span class="text-bold">Description:</span> {{ item.description }}</p>
                     <p><a href="{{ url('backend_edit', {name: item.nameGeneric}) }}">Edit</a></p>
                 </td>
             </tr>

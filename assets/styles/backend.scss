@@ -4,6 +4,13 @@
   color: variables.$goldenText;
 }
 
+#backend {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #555;
+}
+
 #admin-header {
   height: 100vh;
   width: 100vw;
@@ -53,42 +60,86 @@
   }
 }
 
-#content {
+#backend #content {
   width: 100%;
   display: flex;
-  height: 100%;
+  min-height: 100vh;
 }
 
 main {
-  width: 90%;
+  flex-grow: 1;
+  padding: 20px;
+  padding-bottom: 0px;
+  color: #eee;
 }
 nav#admin-nav {
-  width: 10%;
-  height: 100%;
-
-  li {
-    cursor: pointer;
-    padding: 5px;
-    margin: 5px 0;
-  }
+  width: 220px;
+  background-color: #444;
+  border-right: 1px solid #333;
+  padding: 20px;
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #eee;
+  height: auto;
+  flex-shrink: 0;
 
   ul {
     list-style: none;
     padding-left: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px;
+    transition: background-color 0.2s;
+    border-radius: 4px;
+  }
+
+  li:hover {
+    background-color: #555;
   }
 
   .submenu {
     display: none;
-    padding-left: 20px;
-  }
+    padding-left: 15px;
+    margin-top: 5px;
 
-  .submenu li {
-    cursor: pointer;
-    padding: 3px 0;
+    li {
+      font-weight: normal;
+      color: #ccc;
+      margin-bottom: 5px;
+    }
+
+    a {
+      color: #ccc;
+      text-decoration: none;
+      display: block;
+      padding: 4px 6px;
+      border-radius: 3px;
+      transition: background 0.2s;
+    }
+
+    a:hover {
+      background-color: #666;
+    }
   }
 
   .open > .submenu {
     display: block;
+  }
+
+  .collapsible::after {
+    content: '▸';
+    float: right;
+    transition: transform 0.3s ease;
+    color: #aaa;
+  }
+
+  .open.collapsible::after {
+    transform: rotate(90deg);
   }
 }
 
@@ -248,6 +299,17 @@ nav#admin-nav {
     margin-right: 15px;
   }
 
+  @media screen and (max-width: 780px){
+    #spell_add_form_components {
+      width: 100%;
+    }
+
+    #spell_add_form_componentMaterial {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
   #componentsGrouped  {
     display: inline-flex;
     width: 100%;
@@ -294,6 +356,10 @@ nav#admin-nav {
 
   .details p {
     margin: 0.5rem 0;
+  }
+
+  p span.text-bold {
+    font-weight: 700;
   }
 
   .spell-name {

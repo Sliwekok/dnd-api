@@ -49,6 +49,8 @@ class SpellAddFormType extends AbstractType
                     'Action' => 'action',
                     'Bonus action' => 'bonus',
                     'Reaction' => 'reaction',
+                    'Ritual' => 'ritual',
+                    'Other (as described)' => 'other'
                 ],
                 'required' => true,
             ])
