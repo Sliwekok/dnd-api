@@ -116,7 +116,8 @@ class SpellAddFormType extends AbstractType
                 'multiple' => true,
                 'required' => true,
                 'attr' => [
-                    'class' => 'select2'
+                    'class' => 'select2',
+	                'data-placeholder' => 'Select Classes',
                 ],
             ]);
     }

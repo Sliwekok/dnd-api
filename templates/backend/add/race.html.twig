@@ -1,0 +1,52 @@
+{% extends('backend/template.html.twig') %}
+
+{% block content %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form, { 'attr' : { 'class': 'addForm' } }) }}
+        <h2>Add a new Race</h2>
+
+        <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.name) }}<br><br>
+
+        <label>{{ form_label(form.description) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.description) }}<br><br>
+
+        <label>{{ form_label(form.traits) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.traits) }}<br><br>
+
+        <label>{{ form_label(form.languages) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.languages) }}<br><br>
+
+        <label>{{ form_label(form.speed) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.speed) }}<br><br>
+
+        <label>{{ form_label(form.subrace) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.subrace) }}<br><br>
+
+        <label>{{ form_label(form.type) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.type) }}<br><br>
+
+        <label>{{ form_label(form.size) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.size) }}<br><br>
+
+        <button type="submit">Add Race</button>
+
+    {{ form_end(form) }}
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: $(this).data('placeholder'),
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+
+{% endblock %}

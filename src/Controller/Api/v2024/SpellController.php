@@ -29,12 +29,12 @@ class SpellController extends ApiController {
         $validateData = new ValidateData($this->dm);
         $getData = $request->query->all();
         if (!empty($getData)) {
-            $validator = $validateData->checkColumns(
-                $getData,
-                Spell::class
-            );
+            $columnValidator = $validateData->checkColumns($getData,Spell::class);
+            if (!$columnValidator) return $this->respond(['msg' => 'Invalid data column names'], HttpCodesInterface::BAD_REQUEST);
 
-            if (!$validator) return $this->respond(['msg' => 'Invalid data column names'], HttpCodesInterface::BAD_REQUEST);
+			$valueValidator = $validateData->checkColumnsValueTypes($getData, Spell::class);
+			if (!$valueValidator) return $this->respond(['msg' => 'Invalid data column value types'], HttpCodesInterface::BAD_REQUEST);
+
             $spells = $this->repository->getList($getData);
         } else {
             $spells = $this->repository->getList();

@@ -33,15 +33,19 @@ abstract class BaseRepository
     public function getList($cond = false) : array
     {
         if ($cond) {
-            return $this->getRepository()->findBy($cond);
+            $items = $this->getRepository()->findBy($cond);
         } else {
-            return $this->getRepository()->findAll();
+            $items = $this->getRepository()->findAll();
         }
+	    return $this->toArray($items);
     }
 
     public function toArray(mixed $items): array
     {
         $array = [];
+
+		if (empty($items)) return $array;
+
         if (is_object($items)) {
             if (method_exists($items, 'toArray')) {
                 $array[] = $items->toArray();

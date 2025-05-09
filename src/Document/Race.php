@@ -3,9 +3,10 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use App\Document\Traits;
 
 #[MongoDB\Document(collection: 'Race')]
-class Race
+class Race extends BaseModel
 {
 	#[MongoDB\Id]
 	private string $id;
@@ -19,9 +20,8 @@ class Race
     #[MongoDB\Field(type: "string")]
     private string $description;
 
-    // For example: ['Darkvision', 'Fey Ancestry']
-    #[MongoDB\Field(type: "collection")]
-    private array $traits = [];
+	#[MongoDB\ReferenceMany(targetDocument: Traits::class)]
+	private array $traits = [];
 
     // For example: ['Common', 'Elvish']
     #[MongoDB\Field(type: "collection")]
@@ -126,6 +126,17 @@ class Race
 	public function setSize(string $size): self
 	{
 		$this->size = $size;
+		return $this;
+	}
+
+	public function getType(): string
+	{
+		return $this->type;
+	}
+
+	public function setType(string $type): self
+	{
+		$this->type = $type;
 		return $this;
 	}
 }

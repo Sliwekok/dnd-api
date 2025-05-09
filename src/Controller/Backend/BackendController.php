@@ -2,7 +2,9 @@
 
 namespace App\Controller\Backend;
 
+use App\Document\Race;
 use App\Document\Spell;
+use App\Form\RaceFormInterface;
 use App\Form\SpellAddFormType;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +34,11 @@ class BackendController extends AbstractController
                 $page = 'backend/add/spell.html.twig';
                 $form = $this->createForm(SpellAddFormType::class, $item);
                 break;
+	        case 'race':
+				$item = new Race();
+				$page = 'backend/add/race.html.twig';
+				$form = $this->createForm(RaceFormInterface::class, $item);
+				break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }
@@ -75,21 +82,33 @@ class BackendController extends AbstractController
         ]);
     }
 
-	#[Route('/edit/{name}', name: 'backend_edit', methods: ['GET', 'POST'])]
+	#[Route('/edit/{type}/{name}', name: 'backend_edit', methods: ['GET', 'POST'])]
 	public function edit(
-		Request         $request,
-		string          $name,
+		Request $request,
+		string  $name,
+		string  $type,
 		DocumentManager $dm
 	): Response {
-		$item = $dm->getRepository(Spell::class)->findOneBy(['nameGeneric' => $name]);
+		switch ($type) {
+			case 'spell':
+				$item = $dm->getRepository(Spell::class)->findOneBy(['nameGeneric' => $name]);
+				$page = 'backend/add/spell.html.twig';
+				$form = $this->createForm(SpellAddFormType::class, $item);
+				break;
+			case 'race':
+				$item = new Race();
+				$page = 'backend/add/race.html.twig';
+				$form = $this->createForm(RaceFormInterface::class, $item);
+				break;
+			default:
+				throw new \InvalidArgumentException('Invalid type');
+		}
 
 		if (!$item) {
 			throw $this->createNotFoundException('Item not found');
 		}
 
-		$form = $this->createForm(SpellAddFormType::class, $item);
 		$form->handleRequest($request);
-
 		if ($form->isSubmitted()) {
 			if ($form->isValid()) {
 				$formData = $form->getData();
@@ -99,13 +118,13 @@ class BackendController extends AbstractController
 
 				$this->addFlash('success', 'Item updated successfully!');
 
-				return $this->redirectToRoute('backend_browse', ['type' => 'spell']);
+				return $this->redirectToRoute('backend_browse', ['type' => $type]);
 			} else {
 				$this->addFlash('error', 'There were errors in the form. Please fix them.');
 			}
 		}
 
-		return $this->render('backend/add/spell.html.twig', [
+		return $this->render($page, [
 			'form' => $form
 		]);
 	}
