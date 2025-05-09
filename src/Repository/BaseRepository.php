@@ -47,7 +47,6 @@ abstract class BaseRepository
                 $array[] = $items->toArray();
             } else {
                 $array[] = json_decode(json_encode($items), true);
-                dd((array)$items);
             }
         } else {
             foreach ($items as $item) {
