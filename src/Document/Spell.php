@@ -5,7 +5,7 @@ namespace App\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 #[ODM\Document]
-class Spell
+class Spell extends BaseModel
 {
     #[ODM\Id]
     private string $id;
@@ -39,6 +39,9 @@ class Spell
 
 	#[ODM\Field(type: 'string')]
     private string $description;
+
+    #[ODM\Field(type: 'string')]
+    private string $castingTime;
 
     #[ODM\Field(type: 'collection')]
     private array $classes = [];

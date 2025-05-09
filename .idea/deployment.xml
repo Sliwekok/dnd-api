@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="sliwek" filePermissions="511" folderPermissions="511" confirmBeforeDeletion="false" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="sliwek" preserveTimestamps="false" filePermissions="511" folderPermissions="511" confirmBeforeDeletion="false" autoUploadExternalChanges="true">
     <option name="confirmBeforeDeletion" value="false" />
     <serverData>
       <paths name="caparol 24">
@@ -39,6 +39,27 @@
         </serverdata>
       </paths>
       <paths name="holcim reprezentacja">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="nufarm 25">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="nufarm prod">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="rodzina korzysci">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

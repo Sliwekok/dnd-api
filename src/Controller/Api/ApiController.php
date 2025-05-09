@@ -3,17 +3,15 @@
 namespace App\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiController extends AbstractController
 {
-	#[Route('/', name: 'api', methods: ['GET'])]
-	public function api (
-		Request     $request
-	): Response {
+	public function respond(
+        array   $data,
+        int     $status = 200,
+	): JsonResponse {
 
-		return $this->render('index.html.twig', []);
+        return $this->json($data, $status);
 	}
 }
