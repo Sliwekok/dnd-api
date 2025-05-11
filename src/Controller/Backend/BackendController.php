@@ -4,8 +4,10 @@ namespace App\Controller\Backend;
 
 use App\Document\Race;
 use App\Document\Spell;
+use App\Document\Traits;
 use App\Form\RaceFormInterface;
 use App\Form\SpellAddFormType;
+use App\Form\TraitsFormInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,6 +41,11 @@ class BackendController extends AbstractController
 				$page = 'backend/add/race.html.twig';
 				$form = $this->createForm(RaceFormInterface::class, $item);
 				break;
+	        case 'traits':
+		        $item = new Traits();
+		        $page = 'backend/add/traits.html.twig';
+		        $form = $this->createForm(TraitsFormInterface::class, $item);
+		        break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }
@@ -47,7 +54,14 @@ class BackendController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $dm->persist($item);
+	            $formData = $form->getData();
+	            if (method_exists($formData, 'setNameGeneric')) {
+		            $nameGeneric = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($formData->getName()));
+		            $formData->setNameGeneric($nameGeneric);
+	            }
+	            $formData->setAccepted(true);
+
+                $dm->persist($formData);
                 $dm->flush();
 
                 $this->addFlash('success', 'Item added successfully!');
@@ -73,6 +87,10 @@ class BackendController extends AbstractController
                 $items = $dm->getRepository(Spell::class)->findAll();
                 $page = 'backend/browse/spell.html.twig';
                 break;
+	        case 'traits':
+		        $items = $dm->getRepository(Traits::class)->findAll();
+		        $page = 'backend/browse/traits.html.twig';
+		        break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }
@@ -96,9 +114,14 @@ class BackendController extends AbstractController
 				$form = $this->createForm(SpellAddFormType::class, $item);
 				break;
 			case 'race':
-				$item = new Race();
+				$item = $dm->getRepository(Race::class)->findOneBy(['nameGeneric' => $name]);
 				$page = 'backend/add/race.html.twig';
 				$form = $this->createForm(RaceFormInterface::class, $item);
+				break;
+			case 'traits':
+				$item = $dm->getRepository(Traits::class)->findOneBy(['nameGeneric' => $name]);
+				$page = 'backend/add/traits.html.twig';
+				$form = $this->createForm(TraitsFormInterface::class, $item);
 				break;
 			default:
 				throw new \InvalidArgumentException('Invalid type');
@@ -112,8 +135,13 @@ class BackendController extends AbstractController
 		if ($form->isSubmitted()) {
 			if ($form->isValid()) {
 				$formData = $form->getData();
+				if (method_exists($formData, 'setNameGeneric')) {
+					$nameGeneric = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($formData->getName()));
+					$formData->setNameGeneric($nameGeneric);
+				}
 				$formData->setAccepted(true);
 
+				$dm->persist($formData);
 				$dm->flush();
 
 				$this->addFlash('success', 'Item updated successfully!');

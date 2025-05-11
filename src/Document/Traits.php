@@ -4,43 +4,46 @@ namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-#[MongoDB\Document(collection: 'Race')]
+#[MongoDB\Document(collection: 'Traits')]
 class Traits extends BaseModel
 {
 	#[MongoDB\Id]
 	private string $id;
 
 	#[MongoDB\Field(type: "string")]
-	private string $title;
+	private string $name;
 
 	#[MongoDB\Field(type: "string")]
-	private string $titleGeneric;
+	private string $nameGeneric;
 
 	#[MongoDB\Field(type: "string")]
 	private string $description;
+
+	#[MongoDB\Field(type: 'bool')]
+	private bool $accepted = false;
 
 	public function getId(): ?string
 	{
 		return $this->id;
 	}
 
-	public function getTitle(): string
+	public function getName(): string
 	{
-		return $this->title;
+		return $this->name;
 	}
-	public function setTitle(string $title): self
+	public function setName(string $name): self
 	{
-		$this->title = $title;
+		$this->name = $name;
 		return $this;
 	}
 
-	public function getTitleGeneric(): string
+	public function getNameGeneric(): string
 	{
-		return $this->titleGeneric;
+		return $this->nameGeneric;
 	}
-	public function setTitleGeneric(string $titleGeneric): self
+	public function setNameGeneric(string $nameGeneric): self
 	{
-		$this->titleGeneric = $titleGeneric;
+		$this->nameGeneric = $nameGeneric;
 		return $this;
 	}
 
@@ -51,6 +54,17 @@ class Traits extends BaseModel
 	public function setDescription(string $description): self
 	{
 		$this->description = $description;
+		return $this;
+	}
+
+	public function isAccepted(): bool
+	{
+		return $this->accepted;
+	}
+
+	public function setAccepted (bool $accepted): self
+	{
+		$this->accepted = $accepted;
 		return $this;
 	}
 }

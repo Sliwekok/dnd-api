@@ -41,6 +41,9 @@ class Race extends BaseModel
     #[MongoDB\Field(type: "string")]
     private string $size;
 
+	#[MongoDB\Field(type: 'bool')]
+	private bool $accepted = false;
+
     public function getName(): string
     {
 	    return $this->name;
@@ -137,6 +140,17 @@ class Race extends BaseModel
 	public function setType(string $type): self
 	{
 		$this->type = $type;
+		return $this;
+	}
+
+	public function isAccepted(): bool
+	{
+		return $this->accepted;
+	}
+
+	public function setAccepted (bool $accepted): self
+	{
+		$this->accepted = $accepted;
 		return $this;
 	}
 }

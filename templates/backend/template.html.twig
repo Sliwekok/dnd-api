@@ -97,6 +97,8 @@
             });
         } else {
             document.getElementById('admin-header').style.display = 'none';
+            // recreate cookie to keep it alive
+            Cookies.set('admin', 'true', 1);
         }
     })();
 
