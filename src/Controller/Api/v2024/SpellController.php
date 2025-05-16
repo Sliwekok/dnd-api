@@ -35,16 +35,16 @@ class SpellController extends ApiController {
 			$valueValidator = $validateData->checkColumnsValueTypes($getData, Spell::class);
 			if (!$valueValidator) return $this->respond(['msg' => 'Invalid data column value types'], HttpCodesInterface::BAD_REQUEST);
 
-            $spells = $this->repository->getList($getData);
+            $items = $this->repository->getList($getData);
         } else {
-            $spells = $this->repository->getList();
+            $items = $this->repository->getList();
         }
-		return $this->respond($spells, HttpCodesInterface::SUCCESS);
+		return $this->respond($items, HttpCodesInterface::SUCCESS);
 	}
 
-	#[Route('/{name}', name: '2024_api_spell_single', methods: ['GET'])]
-	public function getSingle(string $name): JsonResponse {
-        $spell = $this->repository->getSingle($name);
-		return $this->respond($spell, HttpCodesInterface::SUCCESS);
+	#[Route('/{item}', name: '2024_api_spell_single', methods: ['GET'])]
+	public function getSingle(string $item): JsonResponse {
+        $item = $this->repository->getSingle($item);
+		return $this->respond($item, HttpCodesInterface::SUCCESS);
 	}
 }
