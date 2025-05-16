@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api/2024/race')]
-
 class RaceController extends ApiController {
 
 	public function __construct (
