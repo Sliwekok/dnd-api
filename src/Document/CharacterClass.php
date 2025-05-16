@@ -19,6 +19,24 @@ class CharacterClass extends BaseModel
 	#[MongoDB\Field(type: "string")]
 	private string $description;
 
+    #[MongoDB\Field(type: "string")]
+    private string $primaryAbility;
+
+    #[MongoDB\Field(type: "collection")]
+    private array $hitPointsDie = [];
+
+    #[MongoDB\Field(type: "collection")]
+    private array $savingThrowProficiency = [];
+
+    #[MongoDB\Field(type: "collection")]
+    private array $skillProficiencies = [];
+
+    #[MongoDB\Field(type: "collection")]
+    private array $weaponProficiencies = [];
+
+    #[MongoDB\Field(type: "collection")]
+    private array $armorTraining = [];
+
 	#[MongoDB\Field(type: 'bool')]
 	private bool $accepted = false;
 
@@ -57,14 +75,74 @@ class CharacterClass extends BaseModel
 		return $this;
 	}
 
-	public function isAccepted(): bool
-	{
-		return $this->accepted;
-	}
+    public function getPrimaryAbility(): string
+    {
+        return $this->primaryAbility;
+    }
 
-	public function setAccepted (bool $accepted): self
-	{
-		$this->accepted = $accepted;
-		return $this;
-	}
+    public function setPrimaryAbility(string $primaryAbility): void
+    {
+        $this->primaryAbility = $primaryAbility;
+    }
+
+    public function getHitPointsDie(): array
+    {
+        return $this->hitPointsDie;
+    }
+
+    public function setHitPointsDie(array $hitPointsDie): void
+    {
+        $this->hitPointsDie = $hitPointsDie;
+    }
+
+    public function getSavingThrowProficiency(): array
+    {
+        return $this->savingThrowProficiency;
+    }
+
+    public function setSavingThrowProficiency(array $savingThrowProficiency): void
+    {
+        $this->savingThrowProficiency = $savingThrowProficiency;
+    }
+
+    public function getSkillProficiencies(): array
+    {
+        return $this->skillProficiencies;
+    }
+
+    public function setSkillProficiencies(array $skillProficiencies): void
+    {
+        $this->skillProficiencies = $skillProficiencies;
+    }
+
+    public function getWeaponProficiencies(): array
+    {
+        return $this->weaponProficiencies;
+    }
+
+    public function setWeaponProficiencies(array $weaponProficiencies): void
+    {
+        $this->weaponProficiencies = $weaponProficiencies;
+    }
+
+    public function getArmorTraining(): array
+    {
+        return $this->armorTraining;
+    }
+
+    public function setArmorTraining(array $armorTraining): void
+    {
+        $this->armorTraining = $armorTraining;
+    }
+
+    public function isAccepted(): bool
+    {
+        return $this->accepted;
+    }
+
+    public function setAccepted (bool $accepted): self
+    {
+        $this->accepted = $accepted;
+        return $this;
+    }
 }
