@@ -1,0 +1,27 @@
+{% extends('backend/template.html.twig') %}
+
+{% block content %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form, { 'attr' : { 'class': 'addForm' } }) }}
+        <h2>Add a new Language</h2>
+
+        <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.name) }}<br><br>
+
+        <label>{{ form_label(form.rarity) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.rarity) }}<br><br>
+
+        <label>{{ form_label(form.origin) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.origin) }}<br><br>
+
+        <button type="submit">Add Language</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}

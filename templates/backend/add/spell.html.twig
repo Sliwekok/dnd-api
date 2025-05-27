@@ -11,19 +11,19 @@
     {{ form_start(form, { 'attr' : { 'class': 'addForm' } }) }}
         <h2>Add a New Spell</h2>
 
-        <label>{{ form_label(form.name) }}</label>
+        <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
         {{ form_widget(form.name) }}<br><br>
 
-        <label>{{ form_label(form.level) }}</label>
+        <label>{{ form_label(form.level) }}<span class="data-type data-type-number">(number)</span></label>
         {{ form_widget(form.level) }}<br><br>
 
-        <label>{{ form_label(form.school) }}</label>
+        <>{{ form_label(form.school) }}<span class="data-type data-type-select-single">(single select)</span></label>
         {{ form_widget(form.school) }}<br><br>
 
-        <label>{{ form_label(form.actionType) }}</label>
+        <label>{{ form_label(form.actionType) }}<span class="data-type data-type-select-single">(single select)</span></label>
         {{ form_widget(form.actionType) }}<br><br>
 
-        <label>{{ form_label(form.range) }}</label>
+        <label>{{ form_label(form.range) }}<span class="data-type data-type-number">(number)</span></label>
         {{ form_widget(form.range) }}<br><br>
 
         <fieldset id="componentsGrouped">
@@ -32,16 +32,16 @@
             {{ form_widget(form.componentMaterial) }}
         </fieldset><br>
 
-        <label>{{ form_label(form.duration) }}</label>
+        <label>{{ form_label(form.duration) }}<span class="data-type data-type-string">(string)</span></label>
         {{ form_widget(form.duration) }}<br><br>
 
         <label>{{ form_widget(form.concentration) }} Requires Concentration</label><br>
         <label>{{ form_widget(form.ritual) }} Ritual Spell</label><br><br>
 
-        <label>{{ form_label(form.description) }}</label><br>
+        <label>{{ form_label(form.description) }}<span class="data-type data-type-string">(string)</span></label>
         {{ form_widget(form.description) }}<br><br>
 
-        <label>{{ form_label(form.classes) }}</label>
+        <label>{{ form_label(form.classes) }}<span class="data-type data-type-select-multiple">(select multiple)</span></label>
         {{ form_widget(form.classes) }}<br><br>
 
         <button type="submit">Add Spell</button>

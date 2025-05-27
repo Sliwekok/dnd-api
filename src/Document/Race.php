@@ -24,7 +24,7 @@ class Race extends BaseModel
 	private array $traits = [];
 
     // For example: ['Common', 'Elvish']
-    #[MongoDB\Field(type: "collection")]
+    #[MongoDB\ReferenceMany(targetDocument: Languages::class)]
     private array $languages = [];
 
     // Walking speed in feet

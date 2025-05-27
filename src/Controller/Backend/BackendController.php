@@ -2,12 +2,16 @@
 
 namespace App\Controller\Backend;
 
+use App\Document\CharacterClass;
+use App\Document\Languages;
 use App\Document\Race;
 use App\Document\Spell;
 use App\Document\Traits;
+use App\Form\LanguageFormInterface;
 use App\Form\RaceFormInterface;
 use App\Form\SpellAddFormType;
 use App\Form\TraitsFormInterface;
+use App\Repository\ClassRepository;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,6 +50,16 @@ class BackendController extends AbstractController
 		        $page = 'backend/add/traits.html.twig';
 		        $form = $this->createForm(TraitsFormInterface::class, $item);
 		        break;
+            case 'class':
+                $item = new CharacterClass();
+                $page = 'backend/add/class.html.twig';
+                $form = $this->createForm(TraitsFormInterface::class, $item);
+                break;
+            case 'language':
+                $item = new Languages();
+                $page = 'backend/add/languages.html.twig';
+                $form = $this->createForm(LanguageFormInterface::class, $item);
+                break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }
@@ -87,10 +101,22 @@ class BackendController extends AbstractController
                 $items = $dm->getRepository(Spell::class)->findAll();
                 $page = 'backend/browse/spell.html.twig';
                 break;
+            case 'race':
+                $items = $dm->getRepository(Race::class)->findAll();
+                $page = 'backend/browse/race.html.twig';
+                break;
 	        case 'traits':
 		        $items = $dm->getRepository(Traits::class)->findAll();
 		        $page = 'backend/browse/traits.html.twig';
 		        break;
+            case 'class':
+                $items = $dm->getRepository(ClassRepository::class)->findAll();
+                $page = 'backend/browse/class.html.twig';
+                break;
+            case 'language':
+                $items = $dm->getRepository(Languages::class)->findAll();
+                $page = 'backend/browse/languages.html.twig';
+                break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }

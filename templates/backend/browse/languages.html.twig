@@ -1,0 +1,75 @@
+{% extends('backend/template.html.twig') %}
+
+{% block content %}
+
+    <h1 class="text-golden">D&D 2024 Spell List</h1>
+
+    <table id="browseTable">
+        <thead>
+            <tr>
+                <th class="sortable" data-sort="name">Name</th>
+                <th class="sortable" data-sort="rarity">Rarity</th>
+                <th class="sortable" data-sort="origin">Origin</th>
+                <th class="sortable" data-sort="accepted">Accepted</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr class="spell-row">
+                <td>{{ item.name|capitalize }}</td>
+                <td>{{ item.rarity|capitalize }}</td>
+                <td>{{ item.origin|capitalize }}</td>
+                <td>
+                    {% if item.accepted %}
+                        <span class="accepted">Yes</span>
+                    {% else %}
+                        <span class="rejected">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <p><a href="{{ url('backend_edit', {name: item.nameGeneric, type: 'languages'}) }}">Edit</a></p>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(document).on('click', '.expand-btn', function () {
+            const $btn = $(this);
+            const $details = $btn.closest('tr').next('.details');
+            $details.slideToggle(200);
+            $btn.text($btn.text() === 'Show' ? 'Hide' : 'Show');
+        });
+
+        $('.sortable').on('click', function () {
+            const $th = $(this);
+            const index = $th.index();
+            const table = $('#browseTable tbody');
+            const asc = !$th.data('asc');
+            $th.data('asc', asc);
+
+            const pairs = [];
+            table.find('tr.spell-row').each(function () {
+                const $row = $(this);
+                const $details = $row.next('.details');
+                pairs.push([$row, $details]);
+            });
+
+            pairs.sort((a, b) => {
+                const aText = a[0].children().eq(index).text().toLowerCase();
+                const bText = b[0].children().eq(index).text().toLowerCase();
+                return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+            });
+
+            table.empty();
+            pairs.forEach(([row, details]) => {
+                table.append(row);
+                table.append(details);
+            });
+        });
+    </script>
+
+
+{% endblock %}

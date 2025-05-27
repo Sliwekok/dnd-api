@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Document\Languages;
 use App\Document\Race;
 use App\Document\Traits;
 use Symfony\Component\Form\AbstractType;
@@ -34,6 +35,9 @@ class RaceFormInterface extends AbstractType
 				'expanded' => false,
 				'multiple' => true,
 				'required' => true,
+                'query_builder' => function ($repository) {
+                    return $repository->createQueryBuilder();
+                },
 				'attr' => [
 					'class' => 'select2',
 					'data-placeholder' => 'Select Traits',
@@ -41,13 +45,16 @@ class RaceFormInterface extends AbstractType
 			])
 			->add('languages', DocumentType::class, [
 				'label' => 'Languages',
-				'class' => Traits::class,
+				'class' => Languages::class,
 				'expanded' => false,
 				'multiple' => true,
 				'required' => true,
+                'query_builder' => function ($repository) {
+                    return $repository->createQueryBuilder();
+                },
 				'attr' => [
 					'class' => 'select2',
-					'data-placeholder' => 'Select Traits',
+					'data-placeholder' => 'Select Languages',
 				],
 			])
 			->add('speed', IntegerType::class, [

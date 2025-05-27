@@ -4,8 +4,8 @@ namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-#[MongoDB\Document(collection: 'Traits')]
-class Traits extends BaseModel
+#[MongoDB\Document(collection: 'Languages')]
+class Languages extends BaseModel
 {
 	#[MongoDB\Id]
 	private string $id;
@@ -16,8 +16,11 @@ class Traits extends BaseModel
 	#[MongoDB\Field(type: "string")]
 	private string $nameGeneric;
 
-	#[MongoDB\Field(type: "string")]
-	private string $description;
+    #[MongoDB\Field(type: "string")]
+    private string $rarity;
+
+    #[MongoDB\Field(type: "string")]
+    private string $origin;
 
 	#[MongoDB\Field(type: 'bool')]
 	private bool $accepted = false;
@@ -47,15 +50,25 @@ class Traits extends BaseModel
 		return $this;
 	}
 
-	public function getDescription(): string
-	{
-		return $this->description;
-	}
-	public function setDescription(string $description): self
-	{
-		$this->description = $description;
-		return $this;
-	}
+    public function getRarity(): string
+    {
+        return $this->rarity;
+    }
+    public function setRarity(string $rarity): self
+    {
+        $this->rarity = $rarity;
+        return $this;
+    }
+
+    public function getOrigin(): string
+    {
+        return $this->origin;
+    }
+    public function setOrigin(string $origin): self
+    {
+        $this->origin = $origin;
+        return $this;
+    }
 
 	public function isAccepted(): bool
 	{

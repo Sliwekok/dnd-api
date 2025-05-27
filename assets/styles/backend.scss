@@ -158,9 +158,17 @@ nav#admin-nav {
     &.data-type-string {
       color: #89CA78;
     }
-
     &.data-type-number {
       color: #3e57ca;
+    }
+    &.data-type-select-single {
+      color: #D19A66;
+    }
+    &.data-type-select-multiple {
+      color: #C678DD;
+    }
+    &.data-type-checkbox {
+      color: #dee534;
     }
   }
 
@@ -242,7 +250,8 @@ nav#admin-nav {
   /* Placeholder text */
   .select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
     color: #f0f0f0 !important;
-    padding: 15px;
+    padding: 5px;
+    padding-bottom: 15px;
     resize: none;
     margin-bottom: 10px;
   }
