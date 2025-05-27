@@ -8,9 +8,8 @@
         <thead>
             <tr>
                 <th class="sortable" data-sort="name">Name</th>
-                <th class="sortable" data-sort="level">Level</th>
-                <th class="sortable" data-sort="classes">Classes</th>
-                <th class="sortable" data-sort="action">Action Type</th>
+                <th class="sortable" data-sort="feature">Feature</th>
+                <th class="sortable" data-sort="skillProficiencies">Skill proficiencies</th>
                 <th class="sortable" data-sort="accepted">Accepted</th>
                 <th></th>
             </tr>
@@ -18,14 +17,13 @@
         <tbody>
         {% for item in items %}
             <tr class="spell-row">
-                <td class="spell-name">{{ item.name }}</td>
-                <td>{{ item.level }}</td>
+                <td class="spell-name">{{ item.name|capitalize }}</td>
+                <td>{{ item.feature|capitalize }}</td>
                 <td>
-                    {% for class in item.classes %}
-                        {{ class|capitalize }}{% if not loop.last %}, {% endif %}
+                    {% for skill in item.skillProficiency %}
+                        {{ skill|capitalize }} {% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </td>
-                <td>{{ item.actionType|capitalize }}</td>
                 <td>
                     {% if item.accepted %}
                         <span class="accepted">Yes</span>
@@ -36,20 +34,24 @@
                 <td><span class="expand-btn">Show</span></td>
             </tr>
             <tr class="details">
-                <td colspan="6">
-                    <p><span class="text-bold">School:</span> {{ item.school|capitalize }}</p>
-                    <p><span class="text-bold">Range:</span> {{ item.range }} feet</p>
-                    <p><span class="text-bold">Components:</span>
-                        {% for component in item.components %}
-                            {{ component }}{% if not loop.last %}, {% endif %}
+                <td colspan="5">
+                    <p>
+                        <span class="text-bold">Ability Scores:</span>
+                        {% for ability in item.abilityScores %}
+                            {{ ability|capitalize }}{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </p>
-                    {% if item.componentMaterial is defined and item.componentMaterial is not null %}
-                        <p><span class="text-bold">Component Material:</span> {{ item.componentMaterial }}</p>
-                    {% endif %}
-                    <p><span class="text-bold">Duration:</span> {{ item.duration }}</p>
-                    <p><span class="text-bold">Description:</span> {{ item.description }}</p>
-                    <p><a href="{{ url('backend_edit', {name: item.nameGeneric, type: 'spell'}) }}">Edit</a></p>
+                    <p><span class="text-bold">Tool proficiencies:</span>
+                        {% for tool in item.toolProficiencies %}
+                            {{ tool|capitalize }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><span class="text-bold">Equipment:</span>
+                        {% for eq in item.equipment %}
+                            {{ eq|capitalize }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><a href="{{ url('backend_edit', {name: item.nameGeneric, type: 'equipment'}) }}">Edit</a></p>
                 </td>
             </tr>
         {% endfor %}

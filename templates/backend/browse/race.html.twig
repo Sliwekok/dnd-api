@@ -32,8 +32,8 @@
                 <td><span class="expand-btn">Show</span></td>
             </tr>
             <tr class="details">
-                <td colspan="5">
-                    <p><span class="text-bold">Traits:</span> {{ item.school|capitalize }}</p>
+                <td colspan="6">
+                    <p><span class="text-bold">School:</span> {{ item.school|capitalize }}</p>
                     <p><span class="text-bold">Traits:</span>
                         {% for trait in item.traits %}
                             {{ trait|capitalize }}{% if not loop.last %}, {% endif %}

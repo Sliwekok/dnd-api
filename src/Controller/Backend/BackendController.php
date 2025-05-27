@@ -2,11 +2,13 @@
 
 namespace App\Controller\Backend;
 
+use App\Document\Background;
 use App\Document\CharacterClass;
 use App\Document\Languages;
 use App\Document\Race;
 use App\Document\Spell;
 use App\Document\Traits;
+use App\Form\BackgroundFormInterface;
 use App\Form\LanguageFormInterface;
 use App\Form\RaceFormInterface;
 use App\Form\SpellAddFormType;
@@ -60,6 +62,11 @@ class BackendController extends AbstractController
                 $page = 'backend/add/languages.html.twig';
                 $form = $this->createForm(LanguageFormInterface::class, $item);
                 break;
+	        case 'background':
+		        $item = new Background();
+		        $page = 'backend/add/background.html.twig';
+		        $form = $this->createForm(BackgroundFormInterface::class, $item);
+		        break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }
@@ -117,6 +124,10 @@ class BackendController extends AbstractController
                 $items = $dm->getRepository(Languages::class)->findAll();
                 $page = 'backend/browse/languages.html.twig';
                 break;
+	        case 'background':
+		        $items = $dm->getRepository(Background::class)->findAll();
+		        $page = 'backend/browse/background.html.twig';
+		        break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }
@@ -148,6 +159,21 @@ class BackendController extends AbstractController
 				$item = $dm->getRepository(Traits::class)->findOneBy(['nameGeneric' => $name]);
 				$page = 'backend/add/traits.html.twig';
 				$form = $this->createForm(TraitsFormInterface::class, $item);
+				break;
+			case 'class':
+				$item = $dm->getRepository(ClassRepository::class)->findOneBy(['nameGeneric' => $name]);
+				$page = 'backend/add/class.html.twig';
+				$form = $this->createForm(TraitsFormInterface::class, $item);
+				break;
+			case 'language':
+				$item = $dm->getRepository(Languages::class)->findOneBy(['nameGeneric' => $name]);
+				$page = 'backend/add/language.html.twig';
+				$form = $this->createForm(LanguageFormInterface::class, $item);
+				break;
+			case 'background':
+				$item = $dm->getRepository(Background::class)->findOneBy(['nameGeneric' => $name]);
+				$page = 'backend/add/backgorund.html.twig';
+				$form = $this->createForm(BackgroundFormInterface::class, $item);
 				break;
 			default:
 				throw new \InvalidArgumentException('Invalid type');

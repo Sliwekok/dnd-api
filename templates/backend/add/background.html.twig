@@ -1,0 +1,49 @@
+{% extends('backend/template.html.twig') %}
+
+{% block content %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form, { 'attr' : { 'class': 'addForm' } }) }}
+        <h2>Add a new Background</h2>
+
+        <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.name) }}<br><br>
+
+        <label>{{ form_label(form.description) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.description) }}<br><br>
+
+        <label>{{ form_label(form.abilityScores) }}<span class="data-type data-type-select-multiple">(select multiple)</span></label>
+        {{ form_widget(form.abilityScores) }}<br><br>
+
+        <label>{{ form_label(form.feature) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.feature) }}<br><br>
+
+        <label>{{ form_label(form.skillProficiency) }}<span class="data-type data-type-select-single">(single select)</span></label>
+        {{ form_widget(form.skillProficiency) }}<br><br>
+
+        <label>{{ form_label(form.toolProficiency) }}<span class="data-type data-type-select-single">(single select)</span></label>
+        {{ form_widget(form.toolProficiency) }}<br><br>
+
+        <label>{{ form_label(form.equipment) }}<span class="data-type data-type-select-single">(single select)</span></label>
+        {{ form_widget(form.equipment) }}<br><br>
+
+        <button type="submit">Add Race</button>
+
+    {{ form_end(form) }}
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: $(this).data('placeholder'),
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+
+{% endblock %}

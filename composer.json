@@ -7,7 +7,9 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-mongodb": "*",
         "doctrine/mongodb-odm-bundle": "*",
+        "symfony/asset": "7.2.*",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
@@ -16,8 +18,7 @@
         "symfony/twig-bundle": "7.2.*",
         "symfony/webapp-pack": "*",
         "symfony/webpack-encore-bundle": "*",
-        "symfony/yaml": "7.2.*",
-      "ext-mongodb": "*"
+        "symfony/yaml": "7.2.*"
     },
     "config": {
         "allow-plugins": {

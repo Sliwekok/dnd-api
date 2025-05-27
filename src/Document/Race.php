@@ -3,7 +3,6 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use App\Document\Traits;
 
 #[MongoDB\Document(collection: 'Race')]
 class Race extends BaseModel
