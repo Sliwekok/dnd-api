@@ -92,7 +92,6 @@ class Background extends BaseModel
 		return $this;
 	}
 
-	// Getter and Setter for skillProficiency
 	public function getSkillProficiency(): array
 	{
 		return $this->skillProficiency;
@@ -104,7 +103,6 @@ class Background extends BaseModel
 		return $this;
 	}
 
-	// Getter and Setter for toolProficiency
 	public function getToolProficiency(): array
 	{
 		return $this->toolProficiency;
@@ -116,7 +114,6 @@ class Background extends BaseModel
 		return $this;
 	}
 
-	// Getter and Setter for equipment
 	public function getEquipment(): array
 	{
 		return $this->equipment;
