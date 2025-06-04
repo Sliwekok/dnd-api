@@ -240,4 +240,45 @@ class BackendController extends AbstractController
         return $this->render('backend/add.html.twig', []);
     }
 
+    #[Route('/delete/{type}/{name}', name: 'backend_delete', methods: ['GET'])]
+    public function delete (
+        Request $request,
+        string $type,
+        string $name,
+        DocumentManager $dm
+    ): Response {
+        switch ($type) {
+            case 'spell':
+                $repository = $dm->getRepository(Spell::class);
+                break;
+            case 'race':
+                $repository = $dm->getRepository(Race::class);
+                break;
+            case 'traits':
+                $repository = $dm->getRepository(Traits::class);
+                break;
+            case 'class':
+                $repository = $dm->getRepository(ClassRepository::class);
+                break;
+            case 'language':
+                $repository = $dm->getRepository(Languages::class);
+                break;
+            case 'background':
+                $repository = $dm->getRepository(Background::class);
+                break;
+            default:
+                throw new \InvalidArgumentException('Invalid type');
+        }
+
+        $item = $repository->findOneBy(['nameGeneric' => $name]);
+        if (!$item) {
+            throw $this->createNotFoundException('Item not found');
+        }
+        $dm->remove($item);
+        $dm->flush();
+        $this->addFlash('success', 'Item deleted successfully!');
+
+        return $this->redirectToRoute('backend_browse', ['type' => $type]);
+    }
+
 }

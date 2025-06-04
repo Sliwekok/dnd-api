@@ -49,7 +49,10 @@
                     {% endif %}
                     <p><span class="text-bold">Duration:</span> {{ item.duration }}</p>
                     <p><span class="text-bold">Description:</span> {{ item.description }}</p>
-                    <p><a href="{{ url('backend_edit', {name: item.nameGeneric, type: 'spell'}) }}">Edit</a></p>
+                    <p class="d-inline-flex">
+                        <a class="edit" href="{{ url('backend_edit', {name: item.nameGeneric, type: 'spell'}) }}">Edit</a>
+                        <a class="delete" href="{{ url('backend_delete', {name: item.nameGeneric, type: 'spell'}) }}">Delete</a>
+                    </p>
                 </td>
             </tr>
         {% endfor %}

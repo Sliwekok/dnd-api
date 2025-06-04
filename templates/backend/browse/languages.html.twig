@@ -29,6 +29,10 @@
                 </td>
                 <td>
                     <p><a href="{{ url('backend_edit', {name: item.nameGeneric, type: 'languages'}) }}">Edit</a></p>
+                    <p class="d-inline-flex">
+                        <a class="edit" href="{{ url('backend_edit', {name: item.nameGeneric, type: 'languages'}) }}">Edit</a>
+                        <a class="delete" href="{{ url('backend_delete', {name: item.nameGeneric, type: 'languages'}) }}">Delete</a>
+                    </p>
                 </td>
             </tr>
         {% endfor %}
