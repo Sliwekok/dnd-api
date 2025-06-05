@@ -51,7 +51,10 @@
                             {{ eq|capitalize }}{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </p>
-                    <p><a href="{{ url('backend_edit', {name: item.nameGeneric, type: 'equipment'}) }}">Edit</a></p>
+                    <p class="d-inline-flex">
+                        <a class="edit" href="{{ url('backend_edit', {name: item.nameGeneric, type: 'equipment'}) }}">Edit</a>
+                        <a class="delete" href="{{ url('backend_delete', {name: item.nameGeneric, type: 'equipment'}) }}">Delete</a>
+                    </p>
                 </td>
             </tr>
         {% endfor %}
