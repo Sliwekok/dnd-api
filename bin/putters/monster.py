@@ -19,7 +19,12 @@ collection = db[COLLECTION_NAME]
 with open("../../var/monsters.json", "r", encoding="utf-8") as f:
     monsters = json.load(f)  # Should be a list of dicts
 
-
+# Ensure the collection is empty before inserting new data
+collection.delete_many({})
+# Set the 'accepted' field to false and normalize 'nameGeneric'
+for monster in monsters:
+    monster['accepted'] = False
+    monster['nameGeneric'] = monster['name'].replace(" ", "_").lower()
 # Insert new monsters
 result = collection.insert_many(monsters)
 print(f"Inserted {len(result.inserted_ids)} monsters into MongoDB.")
