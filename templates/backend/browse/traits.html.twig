@@ -4,6 +4,8 @@
 
     <h1 class="text-golden">D&D 2024 Spell List</h1>
 
+    <input type="search" id="search" placeholder="Search for name...">
+
     <table id="browseTable">
         <thead>
             <tr>
@@ -70,6 +72,14 @@
             pairs.forEach(([row, details]) => {
                 table.append(row);
                 table.append(details);
+            });
+        });
+        $('#search').on('input', function () {
+            const searchTerm = $(this).val().toLowerCase();
+            $('#browseTable tbody tr.monster-row').each(function () {
+                const $row = $(this);
+                const name = $row.find('.monster-name').text().toLowerCase();
+                $row.toggle(name.includes(searchTerm));
             });
         });
     </script>

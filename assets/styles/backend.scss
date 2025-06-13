@@ -433,6 +433,16 @@ nav#admin-nav {
   }
 }
 
+#search {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 1rem;
+  background-color: #444456;
+  color: variables.$goldenText;
+}
+
 .flash-message {
     position: fixed;
     top: 10px;

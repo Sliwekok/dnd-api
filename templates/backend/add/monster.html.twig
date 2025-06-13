@@ -1,0 +1,34 @@
+{% extends 'backend/template.html.twig' %}
+
+{% block content %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form, { 'attr': { 'class': 'addForm' } }) }}
+    <h2>Add a New Monster</h2>
+
+    <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
+    {{ form_widget(form.name) }}<br><br>
+
+    {% for field in [
+        'name', 'type', 'initiative', 'ac', 'hp', 'speed',
+        'skills', 'senses', 'languages', 'cr', 'description'
+    ] %}
+        <label>{{ form_label(attribute(form, field)) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(attribute(form, field)) }}<br><br>
+    {% endfor %}
+
+    <label>{{ form_label(form.actions) }}<span class="data-type">(list of strings)</span></label>
+    {{ form_widget(form.actions) }}<br><br>
+
+    <label>{{ form_label(form.reactions) }}<span class="data-type">(list of strings)</span></label>
+    {{ form_widget(form.reactions) }}<br><br>
+
+    <button type="submit">Add Monster</button>
+    {{ form_end(form) }}
+
+{% endblock %}

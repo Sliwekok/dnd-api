@@ -5,11 +5,13 @@ namespace App\Controller\Backend;
 use App\Document\Background;
 use App\Document\CharacterClass;
 use App\Document\Languages;
+use App\Document\Monster;
 use App\Document\Race;
 use App\Document\Spell;
 use App\Document\Traits;
 use App\Form\BackgroundFormInterface;
 use App\Form\LanguageFormInterface;
+use App\Form\MonsterFormInterface;
 use App\Form\RaceFormInterface;
 use App\Form\SpellAddFormType;
 use App\Form\TraitsFormInterface;
@@ -66,6 +68,11 @@ class BackendController extends AbstractController
 		        $item = new Background();
 		        $page = 'backend/add/background.html.twig';
 		        $form = $this->createForm(BackgroundFormInterface::class, $item);
+		        break;
+	        case 'monster':
+		        $item = new Monster();
+		        $page = 'backend/add/monster.html.twig';
+		        $form = $this->createForm(MonsterFormInterface::class, $item);
 		        break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
@@ -128,9 +135,14 @@ class BackendController extends AbstractController
 		        $items = $dm->getRepository(Background::class)->findAll();
 		        $page = 'backend/browse/background.html.twig';
 		        break;
+	        case 'monster':
+		        $items = $dm->getRepository(Monster::class)->findAll();
+		        $page = 'backend/browse/monster.html.twig';
+		        break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }
+
 
         return $this->render($page, [
             'items' => $items
@@ -174,6 +186,11 @@ class BackendController extends AbstractController
 				$item = $dm->getRepository(Background::class)->findOneBy(['nameGeneric' => $name]);
 				$page = 'backend/add/backgorund.html.twig';
 				$form = $this->createForm(BackgroundFormInterface::class, $item);
+				break;
+			case 'monster':
+				$item = $dm->getRepository(Monster::class)->findOneBy(['nameGeneric' => $name]);
+				$page = 'backend/add/monster.html.twig';
+				$form = $this->createForm(MonsterFormInterface::class, $item);
 				break;
 			default:
 				throw new \InvalidArgumentException('Invalid type');
@@ -266,6 +283,9 @@ class BackendController extends AbstractController
             case 'background':
                 $repository = $dm->getRepository(Background::class);
                 break;
+	        case 'monster':
+		        $repository = $dm->getRepository(Monster::class);
+		        break;
             default:
                 throw new \InvalidArgumentException('Invalid type');
         }
