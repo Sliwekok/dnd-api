@@ -53,18 +53,51 @@
                         {% if item.actions|length > 0 %}
                             <ul>
                                 {% for action in item.actions %}
-                                    <li>{{ action }}</li>
+                                    <li><span class="text-bold">{{ action.name }}</span> - {{ action.desc }}</li>
                                 {% endfor %}
                             </ul>
                         {% else %}
                             <span>Monster has no actions</span>
                         {% endif  %}
                     </p>
+                    <p><span class="text-bold">Bonus Actions:</span>
+                        {% if item.bonusAction|length > 0 %}
+                        <ul>
+                            {% for bonus in item.bonusAction %}
+                                <li><span class="text-bold">{{ bonus.name }}</span> - {{ bonus.desc }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <span>Monster has no bonus actions</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Legendary Actions:</span>
+                        {% if item.legendaryAction|length > 0 %}
+                        <ul>
+                            {% for legendary in item.legendaryAction %}
+                                <li><span class="text-bold">{{ legendary.name }}</span> - {{ legendary.desc }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <span>Monster has no legendary actions</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Traits:</span>
+                        {% if item.traits|length > 0 %}
+                        <ul>
+                            {% for trait in item.traits %}
+                                <li><span class="text-bold">{{ trait.name }}</span> - {{ trait.desc }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <span>Monster has no traits</span>
+                        {% endif  %}
+                    </p>
                     <p><span class="text-bold">Reactions:</span>
                         {% if item.reactions|length > 0 %}
                             <ul>
                                 {% for reaction in item.reactions %}
-                                    <li>{{ reaction }}</li>
+                                    <li><span class="text-bold">{{ reaction.name }}</span> - {{ reaction.desc }}</li>
                                 {% endfor %}
                             </ul>
                         {% else %}

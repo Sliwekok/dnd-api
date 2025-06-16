@@ -49,6 +49,15 @@ class Monster
 	#[MongoDB\Field(type: 'collection')]
 	private array $reactions = [];
 
+    #[MongoDB\Field(type: 'collection')]
+    private array $legendaryAction = [];
+
+    #[MongoDB\Field(type: 'collection')]
+    private array $bonusAction = [];
+
+    #[MongoDB\Field(type: 'collection')]
+    private array $traits = [];
+
 	#[MongoDB\Field(type: 'string')]
 	private string $description;
 
@@ -441,6 +450,36 @@ class Monster
 	{
 		$this->name = $name;
 		return $this;
-	}
+    }
+
+    public function getLegendaryAction (): array
+    {
+        return $this->legendaryAction;
+    }
+
+    public function setLegendaryAction (array $legendaryAction): void
+    {
+        $this->legendaryAction = $legendaryAction;
+    }
+
+    public function getBonusAction (): array
+    {
+        return $this->bonusAction;
+    }
+
+    public function setBonusAction (array $bonusAction): void
+    {
+        $this->bonusAction = $bonusAction;
+    }
+
+    public function getTraits (): array
+    {
+        return $this->traits;
+    }
+
+    public function setTraits (array $traits): void
+    {
+        $this->traits = $traits;
+    }
 
 }
