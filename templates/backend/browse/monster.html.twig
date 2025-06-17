@@ -32,12 +32,42 @@
                 <td colspan="7">
                     <p><span class="text-bold">Initiative:</span> {{ item.initiative ?? 10 }}</p>
                     <p><span class="text-bold">Speed:</span> {{ item.speed }}</p>
-                    <p><span class="text-bold">Senses:</span> {{ item.senses }}</p>
-                    <p><span class="text-bold">Languages:</span> {{ item.languages }}</p>
+                    <p><span class="text-bold">Senses:</span>
+                        {% if item.senses|length > 0 %}
+                            <ul>
+                                {% for sense in item.senses %}
+                                    <li>{{ sense }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>Monster has no actions</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Languages:</span>
+                        {% if item.languages|length > 0 %}
+                            <ul>
+                                {% for lang in item.languages %}
+                                    <li>{{ lang }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>Monster has no Languages</span>
+                        {% endif  %}
+                    </p>
 {#                    <p><span class="text-bold">Habitat:</span> {{ item.habitat.habitat }}</p>#}
 {#                    <p><span class="text-bold">Treasure:</span> {{ item.habitat.treasure }}</p>#}
                     <p><span class="text-bold">Description:</span> {{ item.description }}</p>
-                    <p><span class="text-bold">Skills:</span> {{ item.skills }}</p>
+                    <p><span class="text-bold">Skills:</span>
+                        {% if item.skills|length > 0 %}
+                            <ul>
+                                {% for skill in item.skills %}
+                                    <li>{{ skill }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>Monster has no skills</span>
+                        {% endif  %}
+                    </p>
                     <p><span class="text-bold">Abilities:</span>
                         {% if item.abilities|length > 0 %}
                             <ul>
@@ -61,9 +91,9 @@
                         {% endif  %}
                     </p>
                     <p><span class="text-bold">Bonus Actions:</span>
-                        {% if item.bonusAction|length > 0 %}
+                        {% if item.bonusActions|length > 0 %}
                         <ul>
-                            {% for bonus in item.bonusAction %}
+                            {% for bonus in item.bonusActions %}
                                 <li><span class="text-bold">{{ bonus.name }}</span> - {{ bonus.desc }}</li>
                             {% endfor %}
                         </ul>
@@ -72,9 +102,9 @@
                         {% endif  %}
                     </p>
                     <p><span class="text-bold">Legendary Actions:</span>
-                        {% if item.legendaryAction|length > 0 %}
+                        {% if item.legendaryActions|length > 0 %}
                         <ul>
-                            {% for legendary in item.legendaryAction %}
+                            {% for legendary in item.legendaryActions %}
                                 <li><span class="text-bold">{{ legendary.name }}</span> - {{ legendary.desc }}</li>
                             {% endfor %}
                         </ul>

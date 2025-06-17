@@ -31,14 +31,14 @@ class Monster
 	#[MongoDB\Field(type: 'collection')]
 	private array $abilities = [];
 
-	#[MongoDB\Field(type: 'string')]
-	private string $skills = '';
+	#[MongoDB\Field(type: 'collection')]
+	private array $skills = [];
 
-	#[MongoDB\Field(type: 'string')]
-	private string $senses;
+	#[MongoDB\Field(type: 'collection')]
+	private array $senses = [];
 
-	#[MongoDB\Field(type: 'string')]
-	private string $languages;
+	#[MongoDB\Field(type: 'collection')]
+	private array $languages = [];
 
 	#[MongoDB\Field(type: 'string')]
 	private string $cr;
@@ -50,10 +50,10 @@ class Monster
 	private array $reactions = [];
 
     #[MongoDB\Field(type: 'collection')]
-    private array $legendaryAction = [];
+    private array $legendaryActions = [];
 
     #[MongoDB\Field(type: 'collection')]
-    private array $bonusAction = [];
+    private array $bonusActions = [];
 
     #[MongoDB\Field(type: 'collection')]
     private array $traits = [];
@@ -263,57 +263,57 @@ class Monster
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function getLanguages (): string
+	public function getLanguages (): array
 	{
 		return $this->languages;
 	}
 
 	/**
-	 * @param string $languages
+	 * @param array $languages
 	 *
 	 * @return Monster
 	 */
-	public function setLanguages (string $languages): Monster
+	public function setLanguages (array $languages): Monster
 	{
 		$this->languages = $languages;
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function getSenses (): string
+	public function getSenses (): array
 	{
 		return $this->senses;
 	}
 
 	/**
-	 * @param string $senses
+	 * @param array $senses
 	 *
 	 * @return Monster
 	 */
-	public function setSenses (string $senses): Monster
+	public function setSenses (array $senses): Monster
 	{
 		$this->senses = $senses;
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function getSkills (): string
+	public function getSkills (): array
 	{
 		return $this->skills;
 	}
 
 	/**
-	 * @param string $skills
+	 * @param array $skills
 	 *
 	 * @return Monster
 	 */
-	public function setSkills (string $skills): Monster
+	public function setSkills (array $skills): Monster
 	{
 		$this->skills = $skills;
 		return $this;
@@ -452,24 +452,24 @@ class Monster
 		return $this;
     }
 
-    public function getLegendaryAction (): array
+    public function getLegendaryActions (): array
     {
-        return $this->legendaryAction;
+        return $this->legendaryActions;
     }
 
-    public function setLegendaryAction (array $legendaryAction): void
+    public function setLegendaryActions (array $legendaryActions): void
     {
-        $this->legendaryAction = $legendaryAction;
+        $this->legendaryActions = $legendaryActions;
     }
 
-    public function getBonusAction (): array
+    public function getBonusActions (): array
     {
-        return $this->bonusAction;
+        return $this->bonusActions;
     }
 
-    public function setBonusAction (array $bonusAction): void
+    public function setBonusActions (array $bonusActions): void
     {
-        $this->bonusAction = $bonusAction;
+        $this->bonusActions = $bonusActions;
     }
 
     public function getTraits (): array

@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,10 +18,6 @@ class MonsterFormInterface extends AbstractType
 		$builder
 			->add('name', TextType::class, [
 				'label' => 'Name',
-				'required' => true,
-			])
-			->add('nameGeneric', TextType::class, [
-				'label' => 'Generic Name',
 				'required' => true,
 			])
 			->add('type', TextType::class, [
@@ -45,17 +40,29 @@ class MonsterFormInterface extends AbstractType
 				'label' => 'Speed',
 				'required' => true,
 			])
-			->add('skills', TextType::class, [
+			->add('skills', CollectionType::class, [
 				'label' => 'Skills',
-				'required' => false,
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
 			])
-			->add('senses', TextType::class, [
+			->add('senses', CollectionType::class, [
 				'label' => 'Senses',
-				'required' => false,
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
 			])
-			->add('languages', TextType::class, [
+			->add('languages', CollectionType::class, [
 				'label' => 'Languages',
-				'required' => false,
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
 			])
 			->add('cr', TextType::class, [
 				'label' => 'Challenge Rating',
@@ -66,28 +73,51 @@ class MonsterFormInterface extends AbstractType
 				'required' => false,
 				'attr' => ['rows' => 4],
 			])
-			->add('url', UrlType::class, [
-				'label' => 'Reference URL',
-				'required' => false,
-			])
-			->add('accepted', CheckboxType::class, [
-				'label' => 'Accepted',
-				'required' => false,
-			])
 			->add('actions', CollectionType::class, [
 				'label' => 'Actions',
 				'entry_type' => TextType::class,
 				'allow_add' => true,
 				'allow_delete' => true,
+                'by_reference' => false,
 				'required' => false,
 			])
+            ->add('bonusActions', CollectionType::class, [
+                'label' => 'Bonus Actions',
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
+            ])
+            ->add('legendaryActions', CollectionType::class, [
+                'label' => 'Legendary Actions',
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
+            ])
 			->add('reactions', CollectionType::class, [
 				'label' => 'Reactions',
 				'entry_type' => TextType::class,
 				'allow_add' => true,
 				'allow_delete' => true,
-				'required' => false,
-			]);
+                'by_reference' => false,
+                'required' => false,
+			])
+            ->add('traits', CollectionType::class, [
+                'label' => 'Traits',
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false,
+                'by_reference' => false,
+            ])
+            ->add('accepted', CheckboxType::class, [
+                'label' => 'Accepted',
+                'required' => false,
+            ])
+        ;
 	}
 
 	public function configureOptions(OptionsResolver $resolver): void

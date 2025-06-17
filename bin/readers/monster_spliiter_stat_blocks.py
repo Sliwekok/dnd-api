@@ -32,8 +32,24 @@ def parse_monster_page(url):
     hp = re.search(r'HP\s+([^\n]+)', content)
     speed = re.search(r'Speed\s+([^\n]+)', content)
     skills = re.search(r'Skills\s+([^\n]+)', content)
+    match = re.search(r'Skills\s+([^\n]+)', content)
+
+    if match:
+        skills_str = match.group(1)
+        skills_list = [skill.strip() for skill in skills_str.split(',')]
     senses = re.search(r'Senses\s+([^\n]+)', content)
+    match = re.search(r'Senses\s+([^\n]+)', content)
+
+    if match:
+        senses_str = match.group(1)
+        senses_list = [sense.strip() for sense in senses_str.split(',')]
+
     languages = re.search(r'Languages\s+([^\n]+)', content)
+    match = re.search(r'Languages\s+([^\n]+)', content)
+
+    if match:
+        languages_str = match.group(1)
+        languages_list = [lang.strip() for lang in languages_str.split(',')]
     cr = re.search(r'CR\s+([^\n]+)', content)
 
     abilities = {}
@@ -51,41 +67,53 @@ def parse_monster_page(url):
     legendary_actions = []
     reactions = []
 
-    rubrics = main.find_all('div', class_='rub')
-    for i, rub in enumerate(rubrics):
+    for rub in main.find_all('div', class_='rub'):
         label = rub.get_text(strip=True).lower()
         block = []
 
-        # Get all sibling <p> tags between this rubric and the next
-        sib = rub.next_sibling
-        while sib and not (getattr(sib, 'name', None) == 'div' and 'rub' in sib.get('class', [])):
-            if getattr(sib, 'name', None) == 'p':
-                text = sib.get_text(" ", strip=True)
-                match = re.match(r'^(.+?)\.\s*(.+)$', text)
-                if match := re.match(r'^(.+?)\.\s*(.+)$', text):
-                    block.append({
-                        "name": match.group(1).strip(),
-                        "desc": match.group(2).strip()
-                    })
-                elif block:
-                    block[-1]["desc"] = re.sub(r'\s+', ' ', block[-1]["desc"]).strip()
-                else:
-                    block.append({
-                        "name": "Unnamed",
-                        "desc": text.strip()
-                    })
-            sib = sib.next_sibling
+        # iterate all siblings at the same level
+        for sib in rub.next_siblings:
+            # stop when we hit the next rubric header
+            if getattr(sib, 'name', None) == 'div' and 'rub' in sib.get('class', []):
+                break
 
-        if 'legendary' in label:
-            legendary_actions.extend(block)
-        elif 'bonus' in label:
-            bonus_actions.extend(block)
-        elif 'reaction' in label:
-            reactions.extend(block)
-        elif 'action' in label:
-            actions.extend(block)
-        else:
-            traits.extend(block)
+            # 1) If it's a <p>, start a new entry
+            if getattr(sib, 'name', None) == 'p':
+                full_text = sib.get_text(" ", strip=True)
+                m = re.match(r'^(.+?)\.\s*(.+)$', full_text)
+                if m:
+                    # name + initial desc
+                    block.append({
+                        "name": m.group(1).strip(),
+                        "desc": m.group(2).strip()
+                    })
+                else:
+                    # no clear name → continuation of last
+                    if block:
+                        block[-1]["desc"] += " " + full_text
+                        block[-1]["desc"] = re.sub(r'\s+', ' ', block[-1]["desc"]).strip()
+                    else:
+                        block.append({"name": "Unnamed", "desc": full_text})
+
+            # 2) If it's text or <br>/<em>/<a> *after* a <p>, append to last desc
+            elif block and (
+                isinstance(sib, str)
+                or sib.name in ["br", "em", "a"]
+            ):
+                text = sib.get_text(" ", strip=True) if hasattr(sib, 'get_text') else sib.strip()
+                text = re.sub(r'\s+', ' ', text)
+                if text:
+                    block[-1]["desc"] += " " + text
+                    block[-1]["desc"] = block[-1]["desc"].strip()
+
+            # else ignore everything else
+
+        # dispatch into the right category
+        if   'legendary' in label:  legendary_actions.extend(block)
+        elif 'bonus'     in label:  bonus_actions.extend(block)
+        elif 'reaction'  in label:  reactions.extend(block)
+        elif 'action'    in label:  actions.extend(block)
+        else:                       traits.extend(block)
 
     description = soup.find('div', class_='description')
     habitat = soup.find_all('div', class_='habitat')
@@ -99,14 +127,14 @@ def parse_monster_page(url):
         "hp": hp.group(1) if hp else None,
         "speed": speed.group(1) if speed else None,
         "abilities": abilities,
-        "skills": skills.group(1) if skills else None,
-        "senses": senses.group(1) if senses else None,
-        "languages": languages.group(1) if languages else None,
+        "skills": skills_list if skills else None,
+        "senses": senses_list if senses else None,
+        "languages": languages_list if languages else None,
         "cr": cr.group(1) if cr else None,
         "actions": actions,
         "traits": traits,
-        "bonus_actions": bonus_actions,
-        "legendary_actions": legendary_actions,
+        "bonusActions": bonus_actions,
+        "legendaryActions": legendary_actions,
         "reactions": reactions,
         "description": description.get_text(strip=True) if description else "",
         "habitat": {

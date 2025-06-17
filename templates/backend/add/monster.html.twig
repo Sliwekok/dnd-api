@@ -9,26 +9,120 @@
     {% endfor %}
 
     {{ form_start(form, { 'attr': { 'class': 'addForm' } }) }}
-    <h2>Add a New Monster</h2>
+        <h2>Add a New Monster</h2>
 
-    <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
-    {{ form_widget(form.name) }}<br><br>
+        <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.name) }}<br><br>
 
-    {% for field in [
-        'name', 'type', 'initiative', 'ac', 'hp', 'speed',
-        'skills', 'senses', 'languages', 'cr', 'description'
-    ] %}
-        <label>{{ form_label(attribute(form, field)) }}<span class="data-type data-type-string">(string)</span></label>
-        {{ form_widget(attribute(form, field)) }}<br><br>
-    {% endfor %}
+        <label>{{ form_label(form.type) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.type) }}<br><br>
 
-    <label>{{ form_label(form.actions) }}<span class="data-type">(list of strings)</span></label>
-    {{ form_widget(form.actions) }}<br><br>
+        <label>{{ form_label(form.initiative) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.initiative) }}<br><br>
 
-    <label>{{ form_label(form.reactions) }}<span class="data-type">(list of strings)</span></label>
-    {{ form_widget(form.reactions) }}<br><br>
+        <label>{{ form_label(form.ac) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.ac) }}<br><br>
 
-    <button type="submit">Add Monster</button>
-    {{ form_end(form) }}
+        <label>{{ form_label(form.hp) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.hp) }}<br><br>
+
+        <label>{{ form_label(form.speed) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.speed) }}<br><br>
+
+        <div class="dynamic-list" id="skills-wrapper" data-prototype="{{ form_widget(form.skills.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.skills) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for skill in form.skills %}
+                <div class="speed-item">
+                    {{ form_widget(skill) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#skills-wrapper">Add Skill</button>
+
+        <div class="dynamic-list" id="senses-wrapper" data-prototype="{{ form_widget(form.senses.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.senses) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for sense in form.senses %}
+                <div class="speed-item">
+                    {{ form_widget(sense) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#senses-wrapper">Add Sense</button>
+
+        <div class="dynamic-list" id="actions-wrapper" data-prototype="{{ form_widget(form.actions.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.actions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for action in form.actions %}
+                <div class="speed-item">
+                    {{ form_widget(action) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#actions-wrapper">Add Action</button>
+
+        <div class="dynamic-list" id="bonusActions-wrapper" data-prototype="{{ form_widget(form.bonusActions.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.bonusActions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for bonus in form.bonusActions %}
+                <div class="speed-item">
+                    {{ form_widget(bonus) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#bonusActions-wrapper">Add Bonus Action</button>
+
+        <div class="dynamic-list" id="legendaryActions-wrapper" data-prototype="{{ form_widget(form.legendaryActions.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.legendaryActions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for legendary in form.legendaryActions %}
+                <div class="speed-item">
+                    {{ form_widget(legendary) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#legendaryActions-wrapper">Add Legendary Action</button>
+
+        <button type="submit">Add Monster</button>
+    {{ form_end(form, { render_rest: false }) }}
+
+<script>
+    $(function () {
+        var indices = {};
+
+        function addItem($wrapper, targetId) {
+            var prototype = $wrapper.data('prototype');
+            var index = indices[targetId] ?? 0;
+            var newForm = prototype.replace(/__name__/g, index);
+            var $newField = $('<div class="speed-item"></div>').append(newForm);
+            $newField.append('<button type="button" class="remove-item">-</button>');
+            $wrapper.append($newField);
+            indices[targetId] = index + 1;
+        }
+
+        $('.dynamic-list').each(function () {
+            var $wrapper = $(this);
+            var id = $wrapper.attr('id');
+            var itemCount = $wrapper.find('.speed-item').length;
+
+            indices[id] = itemCount;
+
+            if (itemCount === 0) {
+                addItem($wrapper, id);
+            }
+        });
+
+        $('.add-item').on('click', function () {
+            var target = $(this).data('target');
+            var $wrapper = $(target);
+            addItem($wrapper, target);
+        });
+
+        $(document).on('click', '.remove-item', function () {
+            $(this).closest('.speed-item').remove();
+        });
+    });
+</script>
 
 {% endblock %}

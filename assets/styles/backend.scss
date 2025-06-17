@@ -334,6 +334,27 @@ nav#admin-nav {
     }
   }
 
+  .dynamic-list {
+    margin-top: 10px;
+    border-top: 1px rgba(variables.$goldenText, 0.5) solid;
+    padding-top: 10px;
+  }
+
+  .speed-item {
+    input[type=text] {
+      width: 85%;
+    }
+
+    .remove-item {
+      background-color: variables.$redText;
+      color: white;
+      width: 5%;
+      margin-left: 5%;
+      font-size: 30px;
+      font-weight: bolder;
+    }
+  }
+
 }
 
 #browseTable {
@@ -460,6 +481,14 @@ nav#admin-nav {
     &.flash-error {
         background-color: #f44336;
     }
+
+  .remove-item {
+
+  }
+
+  .add-item {
+
+  }
 }
 
 .select2-results__options {
