@@ -51,6 +51,17 @@
         </div>
         <button type="button" class="add-item" data-target="#senses-wrapper">Add Sense</button>
 
+        <div class="dynamic-list" id="traits-wrapper" data-prototype="{{ form_widget(form.traits.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.senses) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for trait in form.traits %}
+                <div class="speed-item">
+                    {{ form_widget(trait) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#senses-wrapper">Add Trait</button>
+
         <div class="dynamic-list" id="actions-wrapper" data-prototype="{{ form_widget(form.actions.vars.prototype)|e('html_attr') }}">
             <label>{{ form_label(form.actions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
             {% for action in form.actions %}
