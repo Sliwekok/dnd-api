@@ -11,8 +11,13 @@
     {{ form_start(form, { 'attr': { 'class': 'addForm' } }) }}
         <h2>Add a New Monster</h2>
 
+        {{ form_errors(form) }}
+
         <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
         {{ form_widget(form.name) }}<br><br>
+
+        <label>{{ form_label(form.description) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.description) }}<br><br>
 
         <label>{{ form_label(form.type) }}<span class="data-type data-type-string">(string)</span></label>
         {{ form_widget(form.type) }}<br><br>
@@ -28,6 +33,9 @@
 
         <label>{{ form_label(form.speed) }}<span class="data-type data-type-number">(number)</span></label>
         {{ form_widget(form.speed) }}<br><br>
+
+        <label>{{ form_label(form.cr) }}<span class="data-type data-type-string">(text)</span></label>
+        {{ form_widget(form.cr) }}<br><br>
 
         <div class="dynamic-list" id="skills-wrapper" data-prototype="{{ form_widget(form.skills.vars.prototype)|e('html_attr') }}">
             <label>{{ form_label(form.skills) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
@@ -52,7 +60,7 @@
         <button type="button" class="add-item" data-target="#senses-wrapper">Add Sense</button>
 
         <div class="dynamic-list" id="traits-wrapper" data-prototype="{{ form_widget(form.traits.vars.prototype)|e('html_attr') }}">
-            <label>{{ form_label(form.senses) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            <label>{{ form_label(form.traits) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
             {% for trait in form.traits %}
                 <div class="speed-item">
                     {{ form_widget(trait) }}
@@ -60,7 +68,7 @@
                 </div>
             {% endfor %}
         </div>
-        <button type="button" class="add-item" data-target="#senses-wrapper">Add Trait</button>
+        <button type="button" class="add-item" data-target="#traits-wrapper">Add Trait</button>
 
         <div class="dynamic-list" id="actions-wrapper" data-prototype="{{ form_widget(form.actions.vars.prototype)|e('html_attr') }}">
             <label>{{ form_label(form.actions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>

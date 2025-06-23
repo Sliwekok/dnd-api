@@ -75,7 +75,7 @@ class MonsterFormInterface extends AbstractType
 			])
 			->add('actions', CollectionType::class, [
 				'label' => 'Actions',
-				'entry_type' => TextType::class,
+				'entry_type' => NamedDescriptionItemType::class,
 				'allow_add' => true,
 				'allow_delete' => true,
                 'by_reference' => false,
@@ -83,7 +83,7 @@ class MonsterFormInterface extends AbstractType
 			])
             ->add('bonusActions', CollectionType::class, [
                 'label' => 'Bonus Actions',
-                'entry_type' => TextType::class,
+                'entry_type' => NamedDescriptionItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
@@ -91,7 +91,7 @@ class MonsterFormInterface extends AbstractType
             ])
             ->add('legendaryActions', CollectionType::class, [
                 'label' => 'Legendary Actions',
-                'entry_type' => TextType::class,
+                'entry_type' => NamedDescriptionItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
@@ -99,7 +99,7 @@ class MonsterFormInterface extends AbstractType
             ])
 			->add('reactions', CollectionType::class, [
 				'label' => 'Reactions',
-				'entry_type' => TextType::class,
+				'entry_type' => NamedDescriptionItemType::class,
 				'allow_add' => true,
 				'allow_delete' => true,
                 'by_reference' => false,
@@ -107,7 +107,7 @@ class MonsterFormInterface extends AbstractType
 			])
             ->add('traits', CollectionType::class, [
                 'label' => 'Traits',
-                'entry_type' => TextType::class,
+                'entry_type' => NamedDescriptionItemType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'required' => false,
