@@ -402,6 +402,27 @@ nav#admin-nav {
     display: inline-block;
   }
 
+  #monster_form_interface_abilities {
+    width: 100%;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    div {
+      width: 30%;
+      text-align: center;
+
+      div {
+        width: 100%;
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        div {
+          width: 40%;
+        }
+      }
+    }
+  }
 }
 
 #browseTable {

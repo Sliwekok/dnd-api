@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,6 +25,10 @@ class MonsterFormInterface extends AbstractType
 				'label' => 'Type',
 				'required' => true,
 			])
+            ->add('abilities', MonsterAbilityType::class, [
+                'label' => 'Abilities',
+                'required' => false,
+            ])
 			->add('initiative', TextType::class, [
 				'label' => 'Initiative',
 				'required' => false,
@@ -115,6 +120,10 @@ class MonsterFormInterface extends AbstractType
             ])
             ->add('accepted', CheckboxType::class, [
                 'label' => 'Accepted',
+                'required' => false,
+            ])
+            ->add('url', UrlType::class, [
+                'label' => 'Source',
                 'required' => false,
             ])
         ;

@@ -38,6 +38,9 @@
         <label>{{ form_label(form.cr) }}<span class="data-type data-type-string">(text)</span></label>
         {{ form_widget(form.cr) }}<br><br>
 
+        <label>{{ form_label(form.abilities) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.abilities) }}<br><br>
+
         <div class="dynamic-list" id="skills-wrapper" data-prototype="{{ form_widget(form.skills.vars.prototype)|e('html_attr') }}">
             <label>{{ form_label(form.skills) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
             {% for skill in form.skills %}
@@ -102,6 +105,10 @@
                 </div>
             {% endfor %}
         </div>
+
+        <label>{{ form_label(form.url) }}<span class="data-type data-type-string">(text)</span></label>
+        {{ form_widget(form.url) }}<br><br>
+
         <button type="button" class="add-item" data-target="#legendaryActions-wrapper">Add Legendary Action</button>
 
         <button type="submit">Add Monster</button>

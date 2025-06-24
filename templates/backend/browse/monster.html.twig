@@ -189,6 +189,7 @@
 
         $('#search').on('input', function () {
             const searchTerm = $(this).val().toLowerCase();
+            $('.details').hide();
             $('#browseTable tbody tr.monster-row').each(function () {
                 const $row = $(this);
                 const name = $row.find('.monster-name').text().toLowerCase();
