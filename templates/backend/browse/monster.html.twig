@@ -8,14 +8,15 @@
 
     <table id="browseTable">
         <thead>
-        <tr>
-            <th class="sortable" data-sort="name">Name</th>
-            <th class="sortable" data-sort="type">Type</th>
-            <th class="sortable" data-sort="ac">AC</th>
-            <th class="sortable" data-sort="hp">HP</th>
-            <th class="sortable" data-sort="cr">CR</th>
-            <th></th>
-        </tr>
+            <tr>
+                <th class="sortable" data-sort="name">Name</th>
+                <th class="sortable" data-sort="type">Type</th>
+                <th class="sortable" data-sort="ac">AC</th>
+                <th class="sortable" data-sort="hp">HP</th>
+                <th class="sortable" data-sort="cr">CR</th>
+                <th class="sortable" data-sort="cr">Accepted</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
         {% for item in items %}
@@ -25,6 +26,13 @@
                 <td>{{ item.ac }}</td>
                 <td>{{ item.hp }}</td>
                 <td>{{ item.cr }}</td>
+                <td>
+                    {% if item.accepted %}
+                        <span class="accepted">Yes</span>
+                    {% else %}
+                        <span class="rejected">No</span>
+                    {% endif %}
+                </td>
 
                 <td><span class="expand-btn">Show</span></td>
             </tr>
@@ -133,13 +141,6 @@
                         {% else %}
                             <span>Monster has no reactions</span>
                         {% endif  %}
-                    </p>
-                    <p><span class="text-bold">Accepted:</span>
-                        {% if item.accepted %}
-                            <span class="accepted">Yes</span>
-                        {% else %}
-                            <span class="rejected">No</span>
-                        {% endif %}
                     </p>
                     <p class="d-inline-flex">
                         <a class="edit" href="{{ url('backend_edit', {name: item.nameGeneric, type: 'monster'}) }}">Edit</a>

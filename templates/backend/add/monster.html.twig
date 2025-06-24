@@ -12,6 +12,7 @@
         <h2>Add a New Monster</h2>
 
         {{ form_errors(form) }}
+        {{ form_row(form._token) }}
 
         <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
         {{ form_widget(form.name) }}<br><br>
@@ -112,12 +113,13 @@
 
         function addItem($wrapper, targetId) {
             var prototype = $wrapper.data('prototype');
-            var index = indices[targetId] ?? 0;
+            var cleanId = targetId.replace(/^#/, '');
+            var index = indices[cleanId] ?? 0;
             var newForm = prototype.replace(/__name__/g, index);
             var $newField = $('<div class="speed-item"></div>').append(newForm);
             $newField.append('<button type="button" class="remove-item">-</button>');
             $wrapper.append($newField);
-            indices[targetId] = index + 1;
+            indices[cleanId] = index + 1;
         }
 
         $('.dynamic-list').each(function () {
