@@ -5,7 +5,7 @@ namespace App\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 #[MongoDB\Document(collection: 'Monster')]
-class Monster
+class Monster extends BaseModel
 {
 	#[MongoDB\Id]
 	private string $id;
