@@ -1,0 +1,117 @@
+{% extends('backend/template.html.twig') %}
+
+{% block content %}
+
+    <h1 class="text-golden">D&D 2024 Character Class List</h1>
+
+    <input type="search" id="search" placeholder="Search for name...">
+
+    <table id="browseTable">
+        <thead>
+            <tr>
+                <th class="sortable" data-sort="name">Name</th>
+                <th class="sortable" data-sort="primary">Primary Ability</th>
+                <th class="sortable" data-sort="hitDice">Hit Points dice</th>
+                <th class="sortable" data-sort="accepted">Accepted</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr class="spell-row">
+
+                <td>{{ item.name|capitalize }}</td>
+                <td>
+                    {% for primary in item.primaryAbility %}
+                        {{ primary|capitalize }} {% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>D{{ item.hitPointsDie }} per level</td>
+                <td>
+                    {% if item.accepted %}
+                        <span class="accepted">Yes</span>
+                    {% else %}
+                        <span class="rejected">No</span>
+                    {% endif %}
+                </td>
+                <td><span class="expand-btn">Show</span></td>
+            </tr>
+            <tr class="details">
+                <td colspan="6">
+                    <p><span class="text-bold">Saving Throw Proficiencies:</span>
+                        {% for saving in item.savingThrowProficiency %}
+                            {{ saving|capitalize }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><span class="text-bold">Skill Proficiencies:</span>
+                        {% for skill in item.skillProficiencies %}
+                            {{ skill|capitalize }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><span class="text-bold">Weapon Proficiencies:</span>
+                        {% for weapon in item.weaponProficiencies %}
+                            {{ weapon|capitalize }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><span class="text-bold">Armor training:</span>
+                        {% for armor in item.armorTraining %}
+                            {{ armor|capitalize }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="d-inline-flex">
+                        <a class="edit" href="{{ url('backend_edit', {name: item.nameGeneric, type: 'equipment'}) }}">Edit</a>
+                        <a class="delete" href="{{ url('backend_delete', {name: item.nameGeneric, type: 'equipment'}) }}">Delete</a>
+                    </p>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(document).on('click', '.expand-btn', function () {
+            const $btn = $(this);
+            const $details = $btn.closest('tr').next('.details');
+            $details.slideToggle(200);
+            $btn.text($btn.text() === 'Show' ? 'Hide' : 'Show');
+        });
+
+        $('.sortable').on('click', function () {
+            const $th = $(this);
+            const index = $th.index();
+            const table = $('#browseTable tbody');
+            const asc = !$th.data('asc');
+            $th.data('asc', asc);
+
+            const pairs = [];
+            table.find('tr.spell-row').each(function () {
+                const $row = $(this);
+                const $details = $row.next('.details');
+                pairs.push([$row, $details]);
+            });
+
+            pairs.sort((a, b) => {
+                const aText = a[0].children().eq(index).text().toLowerCase();
+                const bText = b[0].children().eq(index).text().toLowerCase();
+                return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+            });
+
+            table.empty();
+            pairs.forEach(([row, details]) => {
+                table.append(row);
+                table.append(details);
+            });
+        });
+
+        $('#search').on('input', function () {
+            const searchTerm = $(this).val().toLowerCase();
+            $('#browseTable tbody tr.monster-row').each(function () {
+                const $row = $(this);
+                const name = $row.find('.monster-name').text().toLowerCase();
+                $row.toggle(name.includes(searchTerm));
+            });
+        });
+    </script>
+
+
+{% endblock %}
