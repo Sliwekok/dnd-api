@@ -423,6 +423,18 @@ nav#admin-nav {
       }
     }
   }
+
+  #monster_form_interface_abilities > div {
+    padding: 1.5%;
+    &:nth-child(3n + 2) {
+      border-left: 2px solid variables.$goldenText;
+      border-right: 2px solid variables.$goldenText;
+    }
+
+    &:nth-child(n + 4) {
+      border-top: 2px solid variables.$goldenText;
+    }
+  }
 }
 
 #browseTable {

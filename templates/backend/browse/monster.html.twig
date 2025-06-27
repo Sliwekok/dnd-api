@@ -12,7 +12,8 @@
                 <th class="sortable" data-sort="name">Name</th>
                 <th class="sortable" data-sort="type">Type</th>
                 <th class="sortable" data-sort="ac">AC</th>
-                <th class="sortable" data-sort="hp">HP</th>
+                <th class="sortable" data-sort="hp">HP - average</th>
+                <th class="sortable" data-sort="hp">HP - calculated</th>
                 <th class="sortable" data-sort="cr">CR</th>
                 <th class="sortable" data-sort="cr">Accepted</th>
                 <th></th>
@@ -24,7 +25,8 @@
                 <td class="monster-name">{{ item.name|capitalize }}</td>
                 <td>{{ item.type|capitalize }}</td>
                 <td>{{ item.ac }}</td>
-                <td>{{ item.hp }}</td>
+                <td>{{ item.hp.avg }}</td>
+                <td>{{ item.hp.calculated }}</td>
                 <td>{{ item.cr }}</td>
                 <td>
                     {% if item.accepted %}
@@ -37,7 +39,7 @@
                 <td><span class="expand-btn">Show</span></td>
             </tr>
             <tr class="details">
-                <td colspan="7">
+                <td colspan="8">
                     <p><span class="text-bold">Initiative:</span> {{ item.initiative ?? 10 }}</p>
                     <p><span class="text-bold">Speed:</span> {{ item.speed }}</p>
                     <p><span class="text-bold">Senses:</span>
@@ -177,6 +179,11 @@
             pairs.sort((a, b) => {
                 const aText = a[0].children().eq(index).text().toLowerCase();
                 const bText = b[0].children().eq(index).text().toLowerCase();
+
+                if (Number(aText) && Number(bText)) {
+                    return asc ? Number(aText) - Number(bText) : Number(bText) - Number(aText);
+                }
+
                 return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
             });
 

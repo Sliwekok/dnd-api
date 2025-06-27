@@ -29,8 +29,13 @@
         <label>{{ form_label(form.ac) }}<span class="data-type data-type-number">(number)</span></label>
         {{ form_widget(form.ac) }}<br><br>
 
-        <label>{{ form_label(form.hp) }}<span class="data-type data-type-string">(string)</span></label>
-        {{ form_widget(form.hp) }}<br><br>
+        <div>
+            <label>{{ form_label(form.hp) }}</label>
+            <label>{{ form_label(form.hp.avg) }}<span class="data-type data-type-number">(number)</span></label>
+            {{ form_widget(form.hp.avg) }}
+            <label>{{ form_label(form.hp.calculated) }}<span class="data-type data-type-string">(text)</span></label>
+            {{ form_widget(form.hp.calculated) }}
+        </div>
 
         <label>{{ form_label(form.speed) }}<span class="data-type data-type-number">(number)</span></label>
         {{ form_widget(form.speed) }}<br><br>

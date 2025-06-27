@@ -3,6 +3,7 @@
 namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document(collection: 'Monster')]
 class Monster extends BaseModel
@@ -22,8 +23,8 @@ class Monster extends BaseModel
 	#[MongoDB\Field(type: 'string')]
 	private string $ac;
 
-	#[MongoDB\Field(type: 'string')]
-	private string $hp;
+	#[MongoDB\Field(type: 'collection')]
+	private array $hp = [];
 
 	#[MongoDB\Field(type: 'string')]
 	private string $speed;
@@ -72,7 +73,6 @@ class Monster extends BaseModel
 
 	#[MongoDB\Field(type: 'bool')]
 	private bool $accepted = false;
-
 
 	#[MongoDB\Field(type: 'string')]
 	private string $nameGeneric;
@@ -358,19 +358,19 @@ class Monster extends BaseModel
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function getHp (): string
+	public function getHp (): array
 	{
 		return $this->hp;
 	}
 
 	/**
-	 * @param string $hp
+	 * @param array $hp
 	 *
 	 * @return Monster
 	 */
-	public function setHp (string $hp): Monster
+	public function setHp (array $hp): Monster
 	{
 		$this->hp = $hp;
 		return $this;

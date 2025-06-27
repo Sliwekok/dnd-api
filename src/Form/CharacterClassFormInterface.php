@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Document\CharacterClass;
 use Symfony\Component\Form\AbstractType;
-use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

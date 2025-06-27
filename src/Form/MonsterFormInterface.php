@@ -3,11 +3,14 @@
 namespace App\Form;
 
 use App\Document\Monster;
+use App\Form\Types\HpType;
+use App\Form\Types\MonsterAbilityType;
+use App\Form\Types\NamedDescriptionItemType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -37,7 +40,7 @@ class MonsterFormInterface extends AbstractType
 				'label' => 'AC',
 				'required' => true,
 			])
-			->add('hp', TextType::class, [
+			->add('hp', HpType::class, [
 				'label' => 'HP',
 				'required' => true,
 			])
