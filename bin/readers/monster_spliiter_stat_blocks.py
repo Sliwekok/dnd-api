@@ -44,26 +44,58 @@ def parse_monster_page(url):
                 "mod": int(match.group(2))
             }
 
-    # Actions and Reactions
-    actions, reactions = [], []
+    # Actions, Reactions, Legendary, Mythic
+    actions, reactions, legendary, mythic = [], [], [], []
     rubrics = main.find_all('div', class_='rub')
     for rub in rubrics:
+
         label = rub.text.strip().lower()
         texts = []
+        current = ""
+
         for sib in rub.next_siblings:
-            if sib.name == 'div' and 'rub' in sib.get('class', []):
+            if isinstance(sib, str) and sib.strip():
+                current += " " + sib.strip()
+            elif hasattr(sib, 'get') and 'rub' in sib.get('class', []):
                 break
-            if sib.name is None and sib.strip():
-                texts.append(sib.strip())
+            elif hasattr(sib, 'get_text'):
+                content = sib.get_text(separator=" ", strip=True)
+                if re.match(r'^[A-Z][^.]+[.:]$', content):  # Start of new entry (e.g., "Bite.")
+                    if current:
+                        texts.append(current.strip())
+                    current = content
+                else:
+                    current += " " + content
+
+        if current:
+            texts.append(current.strip())
+
         if "reaction" in label:
             reactions.extend(texts)
         elif "action" in label:
             actions.extend(texts)
+        elif "trait" in label or "special" in label:
+            traits = texts  # NEW: Save traits
 
     # Extras
     description = soup.find('div', class_='description')
-    habitat = soup.find_all('div', class_='habitat')
+
+    habitat_section = soup.find('div', class_='habitat')
+    habitat_data = {}
+    if habitat_section:
+        for span in habitat_section.find_all('span'):
+            label = span.get_text(strip=True).lower()
+            next_sibling = span.find_next_sibling(text=True)
+            if next_sibling:
+                if "habitat" in label:
+                    habitat_data["habitat"] = next_sibling.strip()
+                elif "treasure" in label:
+                    habitat_data["treasure"] = next_sibling.strip()
+
     source = soup.find('div', class_='source')
+
+    traits = traits if 'traits' in locals() else []
+
 
     return {
         "name": name,
@@ -79,11 +111,11 @@ def parse_monster_page(url):
         "cr": cr.group(1) if cr else None,
         "actions": actions,
         "reactions": reactions,
+        "legendary": legendary,
+        "mythic": mythic,
         "description": description.get_text(strip=True) if description else None,
-        "habitat": {
-            "habitat": habitat[0].get_text(strip=True).replace("Habitat:", "").strip() if len(habitat) > 0 else None,
-            "treasure": habitat[1].get_text(strip=True).replace("Treasure:", "").strip() if len(habitat) > 1 else None,
-        },
+        "habitat": habitat_data if habitat_data else None,
+        "traits": traits,
         "source": source.get_text(strip=True) if source else None,
         "url": url
     }
