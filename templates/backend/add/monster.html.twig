@@ -1,0 +1,161 @@
+{% extends 'backend/template.html.twig' %}
+
+{% block content %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form, { 'attr': { 'class': 'addForm' } }) }}
+        <h2>Add a New Monster</h2>
+
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+
+        <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.name) }}<br><br>
+
+        <label>{{ form_label(form.description) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.description) }}<br><br>
+
+        <label>{{ form_label(form.type) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.type) }}<br><br>
+
+        <label>{{ form_label(form.initiative) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.initiative) }}<br><br>
+
+        <label>{{ form_label(form.ac) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.ac) }}<br><br>
+
+        <div>
+            <label>{{ form_label(form.hp) }}</label>
+            <label>{{ form_label(form.hp.avg) }}<span class="data-type data-type-number">(number)</span></label>
+            {{ form_widget(form.hp.avg) }}
+            <label>{{ form_label(form.hp.calculated) }}<span class="data-type data-type-string">(text)</span></label>
+            {{ form_widget(form.hp.calculated) }}
+        </div>
+
+        <label>{{ form_label(form.speed) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.speed) }}<br><br>
+
+        <label>{{ form_label(form.cr) }}<span class="data-type data-type-string">(text)</span></label>
+        {{ form_widget(form.cr) }}<br><br>
+
+        <label>{{ form_label(form.abilities) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.abilities) }}<br><br>
+
+        <div class="dynamic-list" id="skills-wrapper" data-prototype="{{ form_widget(form.skills.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.skills) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for skill in form.skills %}
+                <div class="speed-item">
+                    {{ form_widget(skill) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#skills-wrapper">Add Skill</button>
+
+        <div class="dynamic-list" id="senses-wrapper" data-prototype="{{ form_widget(form.senses.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.senses) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for sense in form.senses %}
+                <div class="speed-item">
+                    {{ form_widget(sense) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#senses-wrapper">Add Sense</button>
+
+        <div class="dynamic-list" id="traits-wrapper" data-prototype="{{ form_widget(form.traits.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.traits) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for trait in form.traits %}
+                <div class="speed-item">
+                    {{ form_widget(trait) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#traits-wrapper">Add Trait</button>
+
+        <div class="dynamic-list" id="actions-wrapper" data-prototype="{{ form_widget(form.actions.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.actions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for action in form.actions %}
+                <div class="speed-item">
+                    {{ form_widget(action) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#actions-wrapper">Add Action</button>
+
+        <div class="dynamic-list" id="bonusActions-wrapper" data-prototype="{{ form_widget(form.bonusActions.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.bonusActions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for bonus in form.bonusActions %}
+                <div class="speed-item">
+                    {{ form_widget(bonus) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#bonusActions-wrapper">Add Bonus Action</button>
+
+        <div class="dynamic-list" id="legendaryActions-wrapper" data-prototype="{{ form_widget(form.legendaryActions.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.legendaryActions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for legendary in form.legendaryActions %}
+                <div class="speed-item">
+                    {{ form_widget(legendary) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <label>{{ form_label(form.url) }}<span class="data-type data-type-string">(text)</span></label>
+        {{ form_widget(form.url) }}<br><br>
+
+        <button type="button" class="add-item" data-target="#legendaryActions-wrapper">Add Legendary Action</button>
+
+        <button type="submit">Add Monster</button>
+    {{ form_end(form, { render_rest: false }) }}
+
+<script>
+    $(function () {
+        var indices = {};
+
+        function addItem($wrapper, targetId) {
+            var prototype = $wrapper.data('prototype');
+            var cleanId = targetId.replace(/^#/, '');
+            var index = indices[cleanId] ?? 0;
+            var newForm = prototype.replace(/__name__/g, index);
+            var $newField = $('<div class="speed-item"></div>').append(newForm);
+            $newField.append('<button type="button" class="remove-item">-</button>');
+            $wrapper.append($newField);
+            indices[cleanId] = index + 1;
+        }
+
+        $('.dynamic-list').each(function () {
+            var $wrapper = $(this);
+            var id = $wrapper.attr('id');
+            var itemCount = $wrapper.find('.speed-item').length;
+
+            indices[id] = itemCount;
+
+            if (itemCount === 0) {
+                addItem($wrapper, id);
+            }
+        });
+
+        $('.add-item').on('click', function () {
+            var target = $(this).data('target');
+            var $wrapper = $(target);
+            addItem($wrapper, target);
+        });
+
+        $(document).on('click', '.remove-item', function () {
+            $(this).closest('.speed-item').remove();
+        });
+    });
+</script>
+
+{% endblock %}

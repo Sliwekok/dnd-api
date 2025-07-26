@@ -19,11 +19,11 @@ class CharacterClass extends BaseModel
 	#[MongoDB\Field(type: "string")]
 	private string $description;
 
-    #[MongoDB\Field(type: "string")]
-    private string $primaryAbility;
-
     #[MongoDB\Field(type: "collection")]
-    private array $hitPointsDie = [];
+    private array $primaryAbility = [];
+
+    #[MongoDB\Field(type: "int")]
+    private int $hitPointsDie;
 
     #[MongoDB\Field(type: "collection")]
     private array $savingThrowProficiency = [];
@@ -75,22 +75,22 @@ class CharacterClass extends BaseModel
 		return $this;
 	}
 
-    public function getPrimaryAbility(): string
+    public function getPrimaryAbility(): array
     {
         return $this->primaryAbility;
     }
 
-    public function setPrimaryAbility(string $primaryAbility): void
+    public function setPrimaryAbility(array $primaryAbility): void
     {
         $this->primaryAbility = $primaryAbility;
     }
 
-    public function getHitPointsDie(): array
+    public function getHitPointsDie(): int
     {
         return $this->hitPointsDie;
     }
 
-    public function setHitPointsDie(array $hitPointsDie): void
+    public function setHitPointsDie(int $hitPointsDie): void
     {
         $this->hitPointsDie = $hitPointsDie;
     }

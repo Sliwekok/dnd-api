@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <h1 class="text-golden">D&D 2024 Spell List</h1>
+    <h1 class="text-golden">D&D 2024 Character Class List</h1>
 
     <input type="search" id="search" placeholder="Search for name...">
 
@@ -10,6 +10,8 @@
         <thead>
             <tr>
                 <th class="sortable" data-sort="name">Name</th>
+                <th class="sortable" data-sort="primary">Primary Ability</th>
+                <th class="sortable" data-sort="hitDice">Hit Points dice</th>
                 <th class="sortable" data-sort="accepted">Accepted</th>
                 <th></th>
             </tr>
@@ -17,7 +19,14 @@
         <tbody>
         {% for item in items %}
             <tr class="spell-row">
-                <td>{{ item.name }}</td>
+
+                <td>{{ item.name|capitalize }}</td>
+                <td>
+                    {% for primary in item.primaryAbility %}
+                        {{ primary|capitalize }} {% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>D{{ item.hitPointsDie }} per level</td>
                 <td>
                     {% if item.accepted %}
                         <span class="accepted">Yes</span>
@@ -28,11 +37,30 @@
                 <td><span class="expand-btn">Show</span></td>
             </tr>
             <tr class="details">
-                <td colspan="3">
-                    <p><span class="text-bold">Description:</span> {{ item.description }}</p>
+                <td colspan="6">
+                    <p><span class="text-bold">Saving Throw Proficiencies:</span>
+                        {% for saving in item.savingThrowProficiency %}
+                            {{ saving|capitalize }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><span class="text-bold">Skill Proficiencies:</span>
+                        {% for skill in item.skillProficiencies %}
+                            {{ skill|capitalize }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><span class="text-bold">Weapon Proficiencies:</span>
+                        {% for weapon in item.weaponProficiencies %}
+                            {{ weapon|capitalize }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p><span class="text-bold">Armor training:</span>
+                        {% for armor in item.armorTraining %}
+                            {{ armor|capitalize }} {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
                     <p class="d-inline-flex">
-                        <a class="edit" href="{{ url('backend_edit', {name: item.nameGeneric, type: 'traits'}) }}">Edit</a>
-                        <a class="delete" href="{{ url('backend_delete', {name: item.nameGeneric, type: 'traits'}) }}">Delete</a>
+                        <a class="edit" href="{{ url('backend_edit', {name: item.nameGeneric, type: 'equipment'}) }}">Edit</a>
+                        <a class="delete" href="{{ url('backend_delete', {name: item.nameGeneric, type: 'equipment'}) }}">Delete</a>
                     </p>
                 </td>
             </tr>
@@ -74,6 +102,7 @@
                 table.append(details);
             });
         });
+
         $('#search').on('input', function () {
             const searchTerm = $(this).val().toLowerCase();
             $('#browseTable tbody tr.monster-row').each(function () {

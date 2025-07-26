@@ -15,6 +15,9 @@ class BaseModel
                 if ($property->getName() == 'id') {
                     continue;
                 }
+                if ($property->getName() == 'url') {
+                    continue;
+                }
                 $property->setAccessible(true);
                 $data[$property->getName()] = $property->getValue($this);
             }

@@ -11,6 +11,8 @@
     {{ form_start(form, { 'attr' : { 'class': 'addForm' } }) }}
         <h2>Add a new Trait</h2>
 
+        {{ form_errors(form) }}
+
         <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
         {{ form_widget(form.name) }}<br><br>
 

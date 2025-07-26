@@ -1,0 +1,208 @@
+{% extends 'backend/template.html.twig' %}
+
+{% block content %}
+
+    <h1 class="text-golden">D&D 2024 Monster List</h1>
+
+    <input type="search" id="search" placeholder="Search for name...">
+
+    <table id="browseTable">
+        <thead>
+            <tr>
+                <th class="sortable" data-sort="name">Name</th>
+                <th class="sortable" data-sort="type">Type</th>
+                <th class="sortable" data-sort="ac">AC</th>
+                <th class="sortable" data-sort="hp">HP - average</th>
+                <th class="sortable" data-sort="hp">HP - calculated</th>
+                <th class="sortable" data-sort="cr">CR</th>
+                <th class="sortable" data-sort="cr">Accepted</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr class="monster-row">
+                <td class="monster-name">{{ item.name|capitalize }}</td>
+                <td>{{ item.type|capitalize }}</td>
+                <td>{{ item.ac }}</td>
+                <td>{{ item.hp.avg }}</td>
+                <td>{{ item.hp.calculated }}</td>
+                <td>{{ item.cr }}</td>
+                <td>
+                    {% if item.accepted %}
+                        <span class="accepted">Yes</span>
+                    {% else %}
+                        <span class="rejected">No</span>
+                    {% endif %}
+                </td>
+
+                <td><span class="expand-btn">Show</span></td>
+            </tr>
+            <tr class="details">
+                <td colspan="8">
+                    <p><span class="text-bold">Initiative:</span> {{ item.initiative ?? 10 }}</p>
+                    <p><span class="text-bold">Speed:</span> {{ item.speed }}</p>
+                    <p><span class="text-bold">Senses:</span>
+                        {% if item.senses|length > 0 %}
+                            <ul>
+                                {% for sense in item.senses %}
+                                    <li>{{ sense }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>Monster has no actions</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Languages:</span>
+                        {% if item.languages|length > 0 %}
+                            <ul>
+                                {% for lang in item.languages %}
+                                    <li>{{ lang }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>Monster has no Languages</span>
+                        {% endif  %}
+                    </p>
+{#                    <p><span class="text-bold">Habitat:</span> {{ item.habitat.habitat }}</p>#}
+{#                    <p><span class="text-bold">Treasure:</span> {{ item.habitat.treasure }}</p>#}
+                    <p><span class="text-bold">Description:</span> {{ item.description }}</p>
+                    <p><span class="text-bold">Skills:</span>
+                        {% if item.skills|length > 0 %}
+                            <ul>
+                                {% for skill in item.skills %}
+                                    <li>{{ skill }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>Monster has no skills</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Abilities:</span>
+                        {% if item.abilities|length > 0 %}
+                            <ul>
+                                {% for ability, values in item.abilities %}
+                                    <li>{{ ability }}: {{ values.score}} ({{ values.mod }})</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                                <span>Monster has no actions</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Actions:</span>
+                        {% if item.actions|length > 0 %}
+                            <ul>
+                                {% for action in item.actions %}
+                                    <li><span class="text-bold">{{ action.name }}</span> - {{ action.desc }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>Monster has no actions</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Bonus Actions:</span>
+                        {% if item.bonusActions|length > 0 %}
+                        <ul>
+                            {% for bonus in item.bonusActions %}
+                                <li><span class="text-bold">{{ bonus.name }}</span> - {{ bonus.desc }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <span>Monster has no bonus actions</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Legendary Actions:</span>
+                        {% if item.legendaryActions|length > 0 %}
+                        <ul>
+                            {% for legendary in item.legendaryActions %}
+                                <li><span class="text-bold">{{ legendary.name }}</span> - {{ legendary.desc }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <span>Monster has no legendary actions</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Traits:</span>
+                        {% if item.traits|length > 0 %}
+                        <ul>
+                            {% for trait in item.traits %}
+                                <li><span class="text-bold">{{ trait.name }}</span> - {{ trait.desc }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <span>Monster has no traits</span>
+                        {% endif  %}
+                    </p>
+                    <p><span class="text-bold">Reactions:</span>
+                        {% if item.reactions|length > 0 %}
+                            <ul>
+                                {% for reaction in item.reactions %}
+                                    <li><span class="text-bold">{{ reaction.name }}</span> - {{ reaction.desc }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span>Monster has no reactions</span>
+                        {% endif  %}
+                    </p>
+                    <p class="d-inline-flex">
+                        <a class="edit" href="{{ url('backend_edit', {name: item.nameGeneric, type: 'monster'}) }}">Edit</a>
+                        <a class="delete" href="{{ url('backend_delete', {name: item.nameGeneric, type: 'monster'}) }}">Delete</a>
+                    </p>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(document).on('click', '.expand-btn', function () {
+            const $btn = $(this);
+            const $details = $btn.closest('tr').next('.details');
+            $details.slideToggle(200);
+            $btn.text($btn.text() === 'Show' ? 'Hide' : 'Show');
+        });
+
+        $('.sortable').on('click', function () {
+            const $th = $(this);
+            const index = $th.index();
+            const table = $('#browseTable tbody');
+            const asc = !$th.data('asc');
+            $th.data('asc', asc);
+
+            const pairs = [];
+            table.find('tr.monster-row').each(function () {
+                const $row = $(this);
+                const $details = $row.next('.details');
+                pairs.push([$row, $details]);
+            });
+
+            pairs.sort((a, b) => {
+                const aText = a[0].children().eq(index).text().toLowerCase();
+                const bText = b[0].children().eq(index).text().toLowerCase();
+
+                if (Number(aText) && Number(bText)) {
+                    return asc ? Number(aText) - Number(bText) : Number(bText) - Number(aText);
+                }
+
+                return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+            });
+
+            table.empty();
+            pairs.forEach(([row, details]) => {
+                table.append(row);
+                table.append(details);
+            });
+        });
+
+        $('#search').on('input', function () {
+            const searchTerm = $(this).val().toLowerCase();
+            $('.details').hide();
+            $('#browseTable tbody tr.monster-row').each(function () {
+                const $row = $(this);
+                const name = $row.find('.monster-name').text().toLowerCase();
+                $row.toggle(name.includes(searchTerm));
+            });
+        });
+    </script>
+
+{% endblock %}

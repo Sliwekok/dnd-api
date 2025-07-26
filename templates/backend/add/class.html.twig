@@ -1,0 +1,51 @@
+{% extends 'backend/template.html.twig' %}
+
+{% block content %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }} flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {{ form_start(form, { 'attr': { 'class': 'addForm' } }) }}
+        <h2>Add a New Character Class</h2>
+
+        {{ form_errors(form) }}
+        {{ form_row(form._token) }}
+
+        <label>{{ form_label(form.name) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.name) }}<br><br>
+
+        <label>{{ form_label(form.description) }}<span class="data-type data-type-string">(string)</span></label>
+        {{ form_widget(form.description) }}<br><br>
+
+        <label>{{ form_label(form.hitPointsDie) }}<span class="data-type data-type-number">(number)</span></label>
+        {{ form_widget(form.hitPointsDie) }}<br><br>
+
+        <label>{{ form_label(form.primaryAbility) }}<span class="data-type data-type-select-multiple">(select multiple)</span></label>
+        {{ form_widget(form.primaryAbility) }}<br><br>
+
+        <label>{{ form_label(form.savingThrowProficiency) }}<span class="data-type data-type-select-multiple">(select multiple)</span></label>
+        {{ form_widget(form.savingThrowProficiency) }}<br><br>
+
+        <label>{{ form_label(form.skillProficiencies) }}<span class="data-type data-type-select-single">(select single)</span></label>
+        {{ form_widget(form.skillProficiencies) }}<br><br>
+
+        <button type="submit">Add Class</button>
+    {{ form_end(form) }}
+
+    <script>
+        $(document).ready(function () {
+            $('.select2').each(function () {
+                $(this).select2({
+                    placeholder: $(this).data('placeholder'),
+                    allowClear: true,
+                    width: '100%',
+                    maximumSelectionLength: $(this).data('max-selections') || null
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

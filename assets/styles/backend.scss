@@ -293,6 +293,7 @@ nav#admin-nav {
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
+    margin-top: 15px;
   }
 
   button:hover {
@@ -334,6 +335,106 @@ nav#admin-nav {
     }
   }
 
+  .dynamic-list {
+    margin-top: 10px;
+    border-top: 1px rgba(variables.$goldenText, 0.5) solid;
+    padding-top: 10px;
+  }
+
+  .speed-item {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100% !important;
+
+    > div {
+      width: 90%;
+      display: inline-flex;
+      flex-wrap: wrap;
+
+      > div {
+        width: 100%;
+        display: inline-flex;
+        flex-wrap: wrap;
+      }
+    }
+
+    input[type=text] {
+      width: 85%;
+    }
+
+    .remove-item {
+      background-color: variables.$redText;
+      color: white;
+      width: 5%;
+      margin-left: 5%;
+      font-size: 30px;
+      font-weight: bolder;
+    }
+  }
+
+  .add-item {
+    border-radius: 2.5px;
+    margin-left: 0.5rem;
+    text-decoration: none;
+    outline: none;
+    padding: 0.4rem 0.8rem;
+    margin-top: 20px !important;
+    display: block;
+    width: fit-content;
+    transition: 0.25s ease-in-out;
+    color: variables.$goldenText;
+    border: 1px solid variables.$goldenText;
+    background: transparent;
+    &:hover {
+      background-color: variables.$goldenText;
+      color: #1e1e2f;
+    }
+  }
+
+  .form-text-25 {
+    width: 25% !important;
+    display: inline-block;
+  }
+
+  .form-text-75 {
+    width: 65% !important;
+    display: inline-block;
+  }
+
+  #monster_form_interface_abilities {
+    width: 100%;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    div {
+      width: 30%;
+      text-align: center;
+
+      div {
+        width: 100%;
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        div {
+          width: 40%;
+        }
+      }
+    }
+  }
+
+  #monster_form_interface_abilities > div {
+    padding: 1.5%;
+    &:nth-child(3n + 2) {
+      border-left: 2px solid variables.$goldenText;
+      border-right: 2px solid variables.$goldenText;
+    }
+
+    &:nth-child(n + 4) {
+      border-top: 2px solid variables.$goldenText;
+    }
+  }
 }
 
 #browseTable {
@@ -433,6 +534,16 @@ nav#admin-nav {
   }
 }
 
+#search {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 1rem;
+  background-color: #444456;
+  color: variables.$goldenText;
+}
+
 .flash-message {
     position: fixed;
     top: 10px;
@@ -450,6 +561,10 @@ nav#admin-nav {
     &.flash-error {
         background-color: #f44336;
     }
+
+  .remove-item {
+
+  }
 }
 
 .select2-results__options {
