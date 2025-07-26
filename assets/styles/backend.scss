@@ -222,9 +222,15 @@ nav#admin-nav {
     color: #1e1e2f;
     margin-right: 4px;
     font-weight: bold;
+    outline: none;
+    border: none;
+    transition: ease-in-out 0.2s;
   }
   .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
     color: #000;
+    outline: none;
+    border: none;
+    background-color: rgba(black, 0.2);
   }
 
   /* Dropdown menu */
