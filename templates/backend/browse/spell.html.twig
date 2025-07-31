@@ -40,7 +40,7 @@
             <tr class="details">
                 <td colspan="6">
                     <p><span class="text-bold">School:</span> {{ item.school|capitalize }}</p>
-                    <p><span class="text-bold">Range:</span> {{ item.range }} feet</p>
+                    <p><span class="text-bold">Range:</span> {{ item.range }}</p>
                     <p><span class="text-bold">Components:</span>
                         {% for component in item.components %}
                             {{ component }}{% if not loop.last %}, {% endif %}
