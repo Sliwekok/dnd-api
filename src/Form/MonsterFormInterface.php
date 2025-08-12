@@ -128,6 +128,7 @@ class MonsterFormInterface extends AbstractType
             ->add('url', UrlType::class, [
                 'label' => 'Source',
                 'required' => false,
+                'default_protocol' => 'https',
             ])
         ;
 	}
