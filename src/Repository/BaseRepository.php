@@ -19,6 +19,18 @@ abstract class BaseRepository
 
     abstract protected function setDocument(): string;
 
+    function getDocument (): mixed
+    {
+        return $this->class;
+    }
+
+    protected static array $unsetFields = [
+        'id',
+        'allowedFields',
+        'source',
+        'accepted',
+    ];
+
     protected function getRepository(): ObjectRepository
     {
         return $this->dm->getRepository($this->class);
@@ -33,6 +45,7 @@ abstract class BaseRepository
     public function getList($cond = false) : array
     {
         if ($cond) {
+
             $items = $this->getRepository()->findBy($cond);
         } else {
             $items = $this->getRepository()->findAll();
@@ -60,8 +73,35 @@ abstract class BaseRepository
                     $array[] = json_decode(json_encode($item), true);
                 }
             }
-            return $array;
         }
+        if (!empty(static::$unsetFields)) {
+            foreach ($array as $key => $item) {
+                foreach (static::$unsetFields as $field) {
+                    if (isset($item[$field])) {
+                        unset($array[$key][$field]);
+                    }
+                }
+            }
+        }
+
         return $array;
+    }
+
+    public function getListFiltered($data): array {
+        $builder = $this->dm->createQueryBuilder($this->class)
+            ->select('m.*')
+            ->from($this->class, 'm');
+        $first = true;
+        foreach ($data as $query) {
+            if ($first) {
+                $builder->where('m.' . $query['column'] . ' = :value')
+                        ->setParameter('value', $query['search']);
+            } else {
+                $builder->andWhere('m.' . $query['column'] . ' = :value')
+                    ->setParameter('value', $query['search']);
+            }
+        }
+
+        return $builder->getQuery->getResult();
     }
 }

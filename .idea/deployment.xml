@@ -3,6 +3,13 @@
   <component name="PublishConfigData" autoUpload="Always" serverName="sliwek" preserveTimestamps="false" filePermissions="511" folderPermissions="511" confirmBeforeDeletion="false" autoUploadExternalChanges="true">
     <option name="confirmBeforeDeletion" value="false" />
     <serverData>
+      <paths name="bingo">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="caparol 24">
         <serverdata>
           <mappings>
@@ -18,6 +25,13 @@
         </serverdata>
       </paths>
       <paths name="fmc 25">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="golearn_prod">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
@@ -53,6 +67,20 @@
         </serverdata>
       </paths>
       <paths name="nufarm prod">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="ppg dev">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="ppg prod">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

@@ -17,7 +17,7 @@ class MonsterController extends ApiController {
 
 	public function __construct (
         private ValidationService   $validationService,
-        private MonsterRepository   $repository
+        private MonsterRepository   $repository,
 	) {}
 
     #[Route('/', name: '2024_api_monster_list', methods: ['GET', 'POST'])]
@@ -29,7 +29,7 @@ class MonsterController extends ApiController {
             return $validationResponse;
         }
 
-        $items = !empty($getData) ? $this->repository->getList($getData) : $this->repository->getList();
+        $items = !empty($getData) ? $this->repository->getListFiltered($getData) : $this->repository->getList();
 
         return $this->respond($items, HttpCodesInterface::SUCCESS);
     }

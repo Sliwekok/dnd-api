@@ -8,6 +8,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[MongoDB\Document(collection: 'Monster')]
 class Monster extends BaseModel
 {
+    protected static array $allowedFields = [
+        'hp' => ['key' => 'hp.avg', 'type' => 'integer'],
+        'str' => ['key' => 'abilities.str', 'type' => 'integer'],
+        'dex' => ['key' => 'abilities.dex', 'type' => 'integer'],
+        'con' => ['key' => 'abilities.con', 'type' => 'integer'],
+        'int' => ['key' => 'abilities.int', 'type' => 'integer'],
+        'wis' => ['key' => 'abilities.wis', 'type' => 'integer'],
+        'cha' => ['key' => 'abilities.cha', 'type' => 'integer'],
+        'ac' => ['key' => 'ac', 'type' => 'integer'],
+        'initiative' => ['key' => 'initiative', 'type' => 'integer'],
+    ];
+
 	#[MongoDB\Id]
 	private string $id;
 
