@@ -2,11 +2,14 @@
 
 namespace App\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ObjectRepository;
 
 
-abstract class BaseRepository
+abstract class BaseRepository extends ServiceEntityRepository
 {
     protected DocumentManager $dm;
     protected string $class;
@@ -89,19 +92,24 @@ abstract class BaseRepository
 
     public function getListFiltered($data): array {
         $builder = $this->dm->createQueryBuilder($this->class)
-            ->select('m.*')
-            ->from($this->class, 'm');
-        $first = true;
-        foreach ($data as $query) {
-            if ($first) {
-                $builder->where('m.' . $query['column'] . ' = :value')
-                        ->setParameter('value', $query['search']);
-            } else {
-                $builder->andWhere('m.' . $query['column'] . ' = :value')
-                    ->setParameter('value', $query['search']);
-            }
+            ->select('t.*');
+
+        $i = 1;
+
+        $parameters = [];
+        foreach ($data as $key => $value) {
+            $paramName = 'p' . $i;
+
+            $builder->where('t = :'. $paramName);
+            $parameters[] = new Parameter($paramName, $value);
+            $i++;
         }
 
-        return $builder->getQuery->getResult();
+        if (!empty($parameters)) {
+            $builder->setParameters($parameters);
+        }
+
+
+        return $builder->getQuery()->execute()->toArray();
     }
 }
