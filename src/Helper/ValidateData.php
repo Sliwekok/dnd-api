@@ -6,9 +6,13 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 class ValidateData
 {
+
+	private array $allowedOperators;
     public function __construct(
         private DocumentManager $dm,
-    ) {}
+    ) {
+	    $this->allowedOperators = ['>=', '<=', '>', '<'];
+    }
 
     public function checkColumns ($data, $entity): bool {
         $entity = new $entity();
@@ -26,6 +30,18 @@ class ValidateData
         $entity = new $entity();
 
 		foreach ($data as $key => $value) {
+			$operator = null;
+			if (preg_match('/^(>=|<=|>|<)(.*)$/', trim($value), $matches)) {
+				$operator = $matches[1];
+				$value = trim($matches[2]);
+			}
+
+			if($operator) {
+				if (!in_array($operator, $this->allowedOperators)) {
+					return false;
+				}
+			}
+
 			$mapping = $entity->getAllowedFields();
             foreach ($mapping as $field) {
                 switch ($field['type']) {

@@ -12,7 +12,7 @@ abstract class BaseModel
      * Fields allowed for search.
      * Child classes can override.
      */
-    protected static array $allowedFields = [];
+    public static array $allowedFields = [];
 
     /**
      * Get allowed fields for search.

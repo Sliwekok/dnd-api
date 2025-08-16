@@ -90,26 +90,51 @@ abstract class BaseRepository extends ServiceEntityRepository
         return $array;
     }
 
-    public function getListFiltered($data): array {
-        $builder = $this->dm->createQueryBuilder($this->class)
-            ->select('t.*');
+	public function getListFiltered($data): array {
+		$builder = $this->dm->createQueryBuilder($this->class);
+		$entity = $this->getDocument();
 
-        $i = 1;
+		foreach ($data as $field => $value) {
+			$key = $entity::$allowedFields[$field]['key'];
+			$type = $entity::$allowedFields[$field]['type'];
 
-        $parameters = [];
-        foreach ($data as $key => $value) {
-            $paramName = 'p' . $i;
+			// operator handling
+			$operator = null;
+			if (preg_match('/^(>=|<=|>|<)(.*)$/', trim($value), $matches)) {
+				$operator = $matches[1];
+				$value = trim($matches[2]);
+			}
 
-            $builder->where('t = :'. $paramName);
-            $parameters[] = new Parameter($paramName, $value);
-            $i++;
-        }
+			// data type for DB
+			switch ($type) {
+				case 'integer':
+					$value = (int) $value;
+					break;
+				case 'float':
+					$value = (float) $value;
+					break;
+				case 'boolean':
+					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+					break;
+			}
 
-        if (!empty($parameters)) {
-            $builder->setParameters($parameters);
-        }
+			$fieldBuilder = $builder->field($key);
+			if ($operator) {
+				match ($operator) {
+					'>'  => $fieldBuilder->gt($value),
+					'>=' => $fieldBuilder->gte($value),
+					'<'  => $fieldBuilder->lt($value),
+					'<=' => $fieldBuilder->lte($value),
+					default => $fieldBuilder->equals($value),
+				};
+			} else {
+				$fieldBuilder->equals($value);
+			}
+		}
 
 
-        return $builder->getQuery()->execute()->toArray();
-    }
+
+
+		return $builder->getQuery()->execute()->toArray();
+	}
 }
