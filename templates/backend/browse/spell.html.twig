@@ -97,9 +97,9 @@
         });
         $('#search').on('input', function () {
             const searchTerm = $(this).val().toLowerCase();
-            $('#browseTable tbody tr.monster-row').each(function () {
+            $('#browseTable tbody tr.spell-row').each(function () {
                 const $row = $(this);
-                const name = $row.find('.monster-name').text().toLowerCase();
+                const name = $row.find('.spell-name').text().toLowerCase();
                 $row.toggle(name.includes(searchTerm));
             });
         });

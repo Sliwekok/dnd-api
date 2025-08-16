@@ -21,8 +21,8 @@
         </thead>
         <tbody>
         {% for item in items %}
-            <tr class="monster-row">
-                <td class="monster-name">{{ item.name|capitalize }}</td>
+            <tr class="spell-row">
+                <td class="spell-name">{{ item.name|capitalize }}</td>
                 <td>{{ item.type|capitalize }}</td>
                 <td>{{ item.ac }}</td>
                 <td>{{ item.hp.avg }}</td>
@@ -170,7 +170,7 @@
             $th.data('asc', asc);
 
             const pairs = [];
-            table.find('tr.monster-row').each(function () {
+            table.find('tr.spell-row').each(function () {
                 const $row = $(this);
                 const $details = $row.next('.details');
                 pairs.push([$row, $details]);
@@ -197,9 +197,9 @@
         $('#search').on('input', function () {
             const searchTerm = $(this).val().toLowerCase();
             $('.details').hide();
-            $('#browseTable tbody tr.monster-row').each(function () {
+            $('#browseTable tbody tr.spell-row').each(function () {
                 const $row = $(this);
-                const name = $row.find('.monster-name').text().toLowerCase();
+                const name = $row.find('.spell-name').text().toLowerCase();
                 $row.toggle(name.includes(searchTerm));
             });
         });
