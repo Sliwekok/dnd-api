@@ -1,118 +1,129 @@
-import fitz
-import re
+import requests
+from bs4 import BeautifulSoup
 import json
+import re
+from time import sleep
+from random import uniform
 
-def extract_text_from_pdf(pdf_path):
-    doc = fitz.open(pdf_path)
-    return "\n".join(page.get_text() for page in doc)
 
-def find_spell_blocks(text):
-    pattern = re.compile(r'([A-Z][A-Z\s\-]+)\n(?:Level \d+|.*Cantrip)', re.MULTILINE)
-    matches = list(pattern.finditer(text))
-
-    spells = []
-    for i, match in enumerate(matches):
-        start = match.start()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        block = text[start:end].strip()
-        spells.append(block)
-
-    return spells
-
-def clean_ocr_errors(text):
-    text = text.replace("l hour", "1 hour")
-    text = text.replace("{", "(").replace("}", ")")
-    text = re.sub(r"\bO\b", "0", text)  # 'O' as digit zero
-    return text
-
-def normalize_title_line(line):
-    # Fix things like: "H UNTER'S MARK" → "Hunter's Mark"
-    line = re.sub(r"\b([A-Z])\s+([A-Z])", r"\1\2", line)
-    return line.title()
-
-def parse_spell_block(block):
-    lines = clean_ocr_errors(block.strip()).split("\n")
-    lines = [line.strip() for line in lines if line.strip()]
-
-    # Normalize spell name
-    name = normalize_title_line(lines[0])
-
-    # Detect and fix the level + school line
-    level_school_line = lines[1]
-    level_match = re.search(r'Level (\d+)', level_school_line)
-    cantrip = "Cantrip" in level_school_line
-    school_match = re.search(r'(Cantrip|Level \d+)\s+([A-Za-z]+)', level_school_line)
-    classes_match = re.findall(r'\((.*?)\)', level_school_line)
-
-    # Extract known fields
-    def get_value(field):
-        for line in lines:
-            if field.lower() in line.lower() and ":" in line:
-                return line.split(":", 1)[1].strip()
-        return ""
-
-    casting_time = get_value("Casting Time")
-    range_ = get_value("Range")
-    duration = get_value("Duration")
-    components_line = get_value("Components")
-
-    # Parse components and optional material
-    components = []
-    component_material = None
-    if components_line:
-        material_match = re.search(r'M\s*\((.*?)\)', components_line)
-        component_material = material_match.group(1).strip() if material_match else None
-        components = re.sub(r'\(.*?\)', '', components_line)
-        components = [c.strip() for c in components.split(",") if c.strip()]
-
-    # Description starts after "Duration:"
+def parse_spell_page(url):
     try:
-        start_desc_idx = next(i for i, line in enumerate(lines) if "Duration" in line)
-        desc_lines = lines[start_desc_idx + 1:]
-        description = " ".join(desc_lines).strip()
-    except StopIteration:
-        description = ""
+        response = requests.get(url)
+        response.raise_for_status()
+    except Exception as e:
+        print(f"Failed to fetch {url}: {e}")
+        return None
 
-    return {
+    soup = BeautifulSoup(response.text, "html.parser")
+    main = soup.find("div", class_="col1")
+    if not main:
+        print(f"No spell data found in {url}")
+        return None
+
+    # --- Name ---
+    name_tag = main.find("h1")
+    name = name_tag.get_text(strip=True) if name_tag else "Unknown"
+
+    # --- Level + school (+ possible class restriction) ---
+    ecole_tag = main.find("div", class_="ecole")
+    level = 0
+    school = ""
+    classes = []
+    if ecole_tag:
+        text = ecole_tag.get_text(" ", strip=True)
+        m = re.match(r"Level\s+(\d+)\s+([A-Za-z]+)(?:\s*\((.*?)\))?", text)
+        if m:
+            level = int(m.group(1))
+            school = m.group(2).lower()
+            if m.group(3):
+                # class restriction in parentheses
+                classes = [c.strip().lower() for c in m.group(3).split(",")]
+
+    # --- Casting Time ---
+    casting_tag = main.find("div", class_="t")
+    casting_time = casting_tag.get_text(" ", strip=True).replace("Casting Time:", "").strip() if casting_tag else ""
+    casting_time = casting_time.replace("Casting Time :", "").strip()
+    # --- Range ---
+    range_tag = main.find("div", class_="r")
+    spell_range = range_tag.get_text(" ", strip=True).replace("Range:", "").strip() if range_tag else ""
+    spell_range = spell_range.replace("Range :", "").strip()
+
+    # --- Components ---
+    comp_tag = main.find("div", class_="c")
+    components_list = []
+    component_material = None
+    if comp_tag:
+        comp_text = comp_tag.get_text(" ", strip=True).replace("Components:", "").strip()
+        comp_text = comp_text.replace("Components :", "").strip()
+        m = re.match(r"^(.*?)\s*(?:\((.*?)\))?$", comp_text)
+        if m:
+            comps = [c.strip() for c in m.group(1).split(",") if c.strip()]
+            components_list = comps
+            if m.group(2):
+                component_material = m.group(2).strip()
+
+    # --- Duration ---
+    duration_tag = main.find("div", class_="d")
+    duration = duration_tag.get_text(" ", strip=True).replace("Duration:", "").strip() if duration_tag else ""
+    duration = duration.replace("Duration :", "").strip()
+    # Ritual / Concentration detection
+    ritual = "ritual" in duration.lower() or "ritual" in casting_time.lower()
+    concentration = "concentration" in duration.lower()
+
+    # --- Description ---
+    descr_tag = main.find("div", class_="description")
+    description = ""
+    if descr_tag:
+        # Replace <br> with line breaks
+        for br in descr_tag.find_all("br"):
+            br.replace_with("\n")
+        description = descr_tag.get_text(" ", strip=True)
+
+    # --- Source ---
+    source_tag = main.find("div", class_="source")
+    source = source_tag.get_text(" ", strip=True) if source_tag else ""
+
+    # Build JSON
+    data = {
         "name": name,
-        "level": 0 if cantrip else int(level_match.group(1)) if level_match else -1,
-        "school": school_match.group(2).lower() if school_match else "Unknown",
+        "level": level,
+        "school": school,
         "actionType": (
-                          "bonus" if "Bonus Action" in casting_time
-                          else "reaction" if "Reaction" in casting_time
-                          else "action"
-                      ),
+                                                "bonus" if "Bonus Action" in casting_time
+                                                else "reaction" if "Reaction" in casting_time
+                                                else "action"
+                                            ),
         "castingTime": casting_time,
-        "range": range_,
+        "range": spell_range,
         "duration": duration,
-        "components": components,
+        "components": components_list,
         "componentMaterial": component_material,
         "description": description,
-        "classes": classes_match[0].lower().split(", ") if classes_match else [],
-        "concentration": "Concentration" in duration,
-        "ritual": "ritual" in casting_time.lower() or "ritual" in description.lower(),
+        "classes": classes,
+        "concentration": concentration,
+        "ritual": ritual,
         "accepted": False,
-        "nameGeneric": name.replace(" ", "_").lower()
+        "nameGeneric": name.replace(" ", "_").lower(),
+        "source": source,
+        "url": url
     }
 
-def get_value_from_prefix(lines, prefix):
-    for line in lines:
-        if line.startswith(prefix):
-            return line.replace(prefix, "").strip()
-    return ""
+    return data
+
 
 if __name__ == "__main__":
-    pdf_path = "./pdf_cut.pdf"
-    raw_text = extract_text_from_pdf(pdf_path)
-    blocks = find_spell_blocks(raw_text)
+    with open("../../var/scraped_links_spells.json", "r", encoding="utf-8") as f:
+        urls = json.load(f)
 
-    parsed_spells = []
-    for block in blocks:
-        spell = parse_spell_block(block)
-        if spell:
-            parsed_spells.append(spell)
+    all_spells = []
+    for i, url in enumerate(urls):
+        print(f"Scraping {i+1}/{len(urls)}: {url}")
+        data = parse_spell_page(url)
+        if data:
+            all_spells.append(data)
+        sleep(uniform(0.5, 1.2))
 
     with open("../../var/spells.json", "w", encoding="utf-8") as f:
-        json.dump(parsed_spells, f, indent=4, ensure_ascii=True)
+        json.dump(all_spells, f, indent=4, ensure_ascii=False)
 
-    print(f"Extracted {len(parsed_spells)} spells to spells.json")
+    print(f"Scraped {len(all_spells)} spells to spells.json")
