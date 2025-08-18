@@ -7,6 +7,17 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 #[ODM\Document]
 class Spell extends BaseModel
 {
+
+    public static array $allowedFields = [
+        'level' => ['key' => 'level', 'type' => 'integer'],
+        'school' => ['key' => 'school', 'type' => 'string'],
+        'actionType' => ['key' => 'actionType', 'type' => 'string'],
+        'classes' => ['key' => 'classes', 'type' => 'array'],
+        'concentration' => ['key' => 'concentration', 'type' => 'boolean'],
+        'ritual' => ['key' => 'ritual', 'type' => 'boolean'],
+    ];
+
+
     #[ODM\Id]
     private string $id;
 

@@ -3,9 +3,7 @@
 namespace App\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ObjectRepository;
 
 
@@ -116,6 +114,8 @@ abstract class BaseRepository extends ServiceEntityRepository
 				case 'boolean':
 					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
 					break;
+                case 'string':
+                    $value = trim($value);
 			}
 
 			$fieldBuilder = $builder->field($key);
@@ -131,9 +131,6 @@ abstract class BaseRepository extends ServiceEntityRepository
 				$fieldBuilder->equals($value);
 			}
 		}
-
-
-
 
 		return $builder->getQuery()->execute()->toArray();
 	}

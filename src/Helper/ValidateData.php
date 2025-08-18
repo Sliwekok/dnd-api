@@ -11,7 +11,7 @@ class ValidateData
     public function __construct(
         private DocumentManager $dm,
     ) {
-	    $this->allowedOperators = ['>=', '<=', '>', '<'];
+	    $this->allowedOperators = ['>=', '<=', '>', '<', ''];
     }
 
     public function checkColumns ($data, $entity): bool {
@@ -43,8 +43,8 @@ class ValidateData
 			}
 
 			$mapping = $entity->getAllowedFields();
-            foreach ($mapping as $field) {
-                switch ($field['type']) {
+            if (isset($mapping[$key])) {
+                switch ($mapping[$key]['type']) {
                     case 'string':
                         if (!is_string($value)) return false;
                         break;
@@ -58,13 +58,15 @@ class ValidateData
                         break;
                     case 'bool':
                     case 'boolean':
-                        if (!is_bool($value)) return false;
+                        if (filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) === null) return false;
                         break;
                     default:
                         break;
                 }
+            } else {
+                return false;
             }
-		}
+        }
 
 		return true;
 	}
