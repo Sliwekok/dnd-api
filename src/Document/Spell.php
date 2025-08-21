@@ -12,7 +12,7 @@ class Spell extends BaseModel
         'level' => ['key' => 'level', 'type' => 'integer'],
         'school' => ['key' => 'school', 'type' => 'string'],
         'actionType' => ['key' => 'actionType', 'type' => 'string'],
-        'classes' => ['key' => 'classes', 'type' => 'array'],
+        'class' => ['key' => 'classes', 'type' => 'array'],
         'concentration' => ['key' => 'concentration', 'type' => 'boolean'],
         'ritual' => ['key' => 'ritual', 'type' => 'boolean'],
     ];

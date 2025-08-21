@@ -32,7 +32,7 @@ class SpellController extends ApiController {
             return $validationResponse;
         }
 
-        $items = !empty($getData) ? $this->repository->getList($getData) : $this->repository->getList();
+        $items = !empty($getData) ? $this->repository->getListFiltered($getData) : $this->repository->getList();
 
 
         return $this->respond($items, HttpCodesInterface::SUCCESS);

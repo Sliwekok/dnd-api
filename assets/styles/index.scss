@@ -48,3 +48,89 @@ a.special {
         }
     }
 }
+
+.swagger-ui {
+    color: white !important;
+}
+
+.swagger-ui .topbar {
+    background-color: #333333 !important;
+    border-bottom: 2px solid #fa1084 !important;
+}
+
+.swagger-ui .topbar a,
+.swagger-ui .topbar .link span {
+    color: #fa1084 !important;
+}
+
+.swagger-ui .scheme-container {
+    background: #444 !important;
+    border: 1px solid #666 !important;
+    color: #f0f0f0 !important;
+}
+
+.swagger-ui .opblock {
+    background: #444 !important;
+    border-color: #666 !important;
+}
+
+.swagger-ui .opblock .opblock-summary {
+    background: #333 !important;
+    color: #fff !important;
+}
+
+.swagger-ui .opblock .opblock-summary-method {
+    background: #fa1084 !important;
+    color: #000 !important;
+    font-weight: bold;
+}
+
+.swagger-ui .opblock .opblock-summary-path,
+.swagger-ui .opblock .opblock-summary-description {
+    color: #ddd !important;
+}
+
+.swagger-ui .response-col_status,
+.swagger-ui .response-col_description {
+    color: #fff !important;
+}
+
+.swagger-ui .btn {
+    background: #fa1084 !important;
+    color: #000 !important;
+    border-radius: 6px !important;
+    font-weight: bold;
+}
+
+.swagger-ui .btn:hover {
+    background: #e0006b !important;
+    color: #fff !important;
+}
+
+.swagger-ui select,
+.swagger-ui input[type="text"],
+.swagger-ui textarea {
+    background: #333 !important;
+    border: 1px solid #777 !important;
+    color: #eee !important;
+}
+
+.swagger-ui .model-box {
+    background: #333 !important;
+    border: 1px solid #777 !important;
+    color: #ddd !important;
+}
+
+.swagger-ui .parameter__name,
+.swagger-ui .parameter__type,
+.swagger-ui .parameter__in {
+    color: #fa1084 !important;
+}
+
+.swagger-ui .info .title {
+    color: white !important;
+}
+
+.swagger-ui .renderedMarkdown p {
+    color: white;
+}

@@ -10,11 +10,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/docs')]
 class DocsController extends AbstractController
 {
-    #[Route('/', name: 'docs_index', methods: ['GET'])]
+    #[Route('', name: 'docs_index', methods: ['GET'])]
     public function index (
         Request     $request
     ): Response {
-
-        return $this->render('index.html.twig', []);
+        return $this->render('docs/index.html.twig', []);
     }
 }

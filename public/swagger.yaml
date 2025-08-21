@@ -1,0 +1,237 @@
+openapi: 3.0.3
+info:
+  title: DND API
+  version: "2024.3"
+  description: >
+    API for retrieving Dungeons & Dragons resources (Monsters, Spells, etc.).  
+    Filtering is validated per resource.  
+    Comparison operators (`>=`, `<=`, `>`, `<`) can be used at the start of filter values where applicable.
+servers:
+  - url: /api/2024
+paths:
+  /monster:
+    get:
+      summary: Get list of monsters
+      description: >
+        Returns a list of monsters.  
+        Example: `?hp=>=20`
+      operationId: getMonsters
+      parameters:
+        - name: hp
+          in: query
+          description: Hit points (integer). Supports operators.
+          required: false
+          schema: { type: string, example: ">=30" }
+        - name: str
+          in: query
+          description: Strength (integer). Supports operators.
+          required: false
+          schema: { type: string }
+        - name: dex
+          in: query
+          description: Dexterity (integer). Supports operators.
+          required: false
+          schema: { type: string }
+        - name: con
+          in: query
+          description: Constitution (integer). Supports operators.
+          required: false
+          schema: { type: string }
+        - name: int
+          in: query
+          description: Intelligence (integer). Supports operators.
+          required: false
+          schema: { type: string }
+        - name: wis
+          in: query
+          description: Wisdom (integer). Supports operators.
+          required: false
+          schema: { type: string }
+        - name: cha
+          in: query
+          description: Charisma (integer). Supports operators.
+          required: false
+          schema: { type: string }
+        - name: ac
+          in: query
+          description: Armor Class (integer). Supports operators.
+          required: false
+          schema: { type: string }
+        - name: initiative
+          in: query
+          description: Initiative (integer). Supports operators.
+          required: false
+          schema: { type: string }
+      responses:
+        "200":
+          description: List of monsters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Monster"
+        "400":
+          description: Validation error (invalid column names or value types)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+  /monster/{item}:
+    get:
+      summary: Get a single monster
+      operationId: getMonster
+      parameters:
+        - name: item
+          in: path
+          required: true
+          description: Monster ID or unique slug
+          schema: { type: string }
+      responses:
+        "200":
+          description: A single monster
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Monster" }
+        "404":
+          description: Monster not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /spells/:
+    get:
+      summary: Get list of spells
+      description: >
+        Returns a list of spells.  
+        Filters allowed: `level`, `school`, `actionType`, `classes`, `concentration`, `ritual`.  
+        Example: `?level=3&concentration=true`
+      operationId: getSpells
+      parameters:
+        - name: level
+          in: query
+          description: Spell level (integer). Supports operators.
+          required: false
+          schema: { type: string, example: ">=3" }
+        - name: school
+          in: query
+          description: Spell school (string).
+          required: false
+          schema: { type: string, example: "Evocation" }
+        - name: actionType
+          in: query
+          description: Action type (string).
+          required: false
+          schema: { type: string, example: "Bonus Action" }
+        - name: class
+          in: query
+          description: Filter by classes.
+          required: false
+          schema: { type: string, example: "Bonus Action" }
+        - name: concentration
+          in: query
+          description: Whether the spell requires concentration (boolean).
+          required: false
+          schema: { type: boolean, example: true }
+        - name: ritual
+          in: query
+          description: Whether the spell can be cast as a ritual (boolean).
+          required: false
+          schema: { type: boolean, example: false }
+      responses:
+        "200":
+          description: List of spells
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Spell"
+        "400":
+          description: Validation error (invalid column names or value types)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+  /spells/{item}:
+    get:
+      summary: Get a single spell
+      operationId: getSpell
+      parameters:
+        - name: item
+          in: path
+          required: true
+          description: Spell ID or unique slug
+          schema: { type: string }
+      responses:
+        "200":
+          description: A single spell
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Spell" }
+        "404":
+          description: Spell not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+components:
+  schemas:
+    Monster:
+      type: object
+      properties:
+        id: { type: string, example: "64f87caa97de9b001c3a1234" }
+        name: { type: string, example: "Goblin" }
+        type: { type: string, example: "Humanoid" }
+        initiative: { type: integer, example: 2 }
+        ac: { type: integer, example: 15 }
+        hp:
+          type: object
+          properties:
+            avg: { type: integer, example: 7 }
+            formula: { type: string, example: "2d6" }
+        abilities:
+          type: object
+          properties:
+            str: { type: integer, example: 8 }
+            dex: { type: integer, example: 14 }
+            con: { type: integer, example: 10 }
+            int: { type: integer, example: 10 }
+            wis: { type: integer, example: 8 }
+            cha: { type: integer, example: 8 }
+        skills: { type: array, items: { type: string }, example: ["Stealth +6"] }
+        senses: { type: array, items: { type: string }, example: ["darkvision 60 ft."] }
+        languages: { type: array, items: { type: string }, example: ["Common"] }
+        cr: { type: string, example: "1/4" }
+        actions: { type: array, items: { type: object } }
+        reactions: { type: array, items: { type: object } }
+        legendaryActions: { type: array, items: { type: object } }
+        bonusActions: { type: array, items: { type: object } }
+        traits: { type: array, items: { type: object } }
+        description: { type: string, example: "Small, green-skinned humanoid." }
+        habitat: { type: array, items: { type: string }, example: ["caves"] }
+        source: { type: string, example: "Monster Manual" }
+        url: { type: string, example: "/monsters/goblin" }
+        accepted: { type: boolean, example: true }
+        nameGeneric: { type: string, example: "goblin" }
+    Spell:
+      type: object
+      properties:
+        id: { type: string, example: "64f87caa97de9b001c3a5678" }
+        name: { type: string, example: "Fireball" }
+        nameGeneric: { type: string, example: "fireball" }
+        level: { type: integer, example: 3 }
+        school: { type: string, example: "Evocation" }
+        actionType: { type: string, example: "Action" }
+        range: { type: string, example: "150 feet" }
+        duration: { type: string, example: "Instantaneous" }
+        components: { type: array, items: { type: string }, example: ["V", "S", "M"] }
+        componentMaterial: { type: string, example: "a tiny ball of bat guano and sulfur" }
+        description: { type: string, example: "A bright streak flashes..." }
+        castingTime: { type: string, example: "1 action" }
+        classes: { type: array, items: { type: string }, example: ["Wizard", "Sorcerer"] }
+        concentration: { type: boolean, example: false }
+        ritual: { type: boolean, example: false }
+        accepted: { type: boolean, example: true }
+    Error:
+      type: object
+      properties:
+        msg: { type: string, example: "Invalid data column value types" }

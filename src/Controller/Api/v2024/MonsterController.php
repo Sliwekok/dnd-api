@@ -20,7 +20,7 @@ class MonsterController extends ApiController {
         private MonsterRepository   $repository,
 	) {}
 
-    #[Route('/', name: '2024_api_monster_list', methods: ['GET', 'POST'])]
+    #[Route('/', name: '2024_api_monster_list', methods: ['GET'])]
     public function getList(Request $request): JsonResponse {
         $getData = $request->query->all();
         $validationResponse = $this->validationService->validateRequestData($getData, Monster::class);

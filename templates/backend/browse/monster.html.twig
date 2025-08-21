@@ -201,6 +201,7 @@
                 const $row = $(this);
                 const name = $row.find('.spell-name').text().toLowerCase();
                 $row.toggle(name.includes(searchTerm));
+                $('.details').hide();
             });
         });
     </script>

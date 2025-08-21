@@ -56,39 +56,43 @@ abstract class BaseRepository extends ServiceEntityRepository
 
     public function toArray(mixed $items): array
     {
-        $array = [];
+        $strip = function(array $doc): array {
+            foreach (static::$unsetFields as $field) {
+                if (array_key_exists($field, $doc)) {
+                    unset($doc[$field]);
+                }
+            }
+            return $doc;
+        };
 
-		if (empty($items)) return $array;
+        if (is_iterable($items)) {
+            $out = [];
+            foreach ($items as $item) {
+                if (is_object($item) && method_exists($item, 'toArray')) {
+                    $doc = $item->toArray();
+                } elseif (is_array($item)) {
+                    $doc = $item;
+                } else {
+                    $doc = json_decode(json_encode($item), true);
+                }
+
+                $out[] = $strip($doc);
+            }
+            return $out;
+        }
 
         if (is_object($items)) {
-            if (method_exists($items, 'toArray')) {
-                $array[] = $items->toArray();
-            } else {
-                $array[] = json_decode(json_encode($items), true);
-            }
-        } else {
-            foreach ($items as $item) {
-                if (method_exists($item, 'toArray')) {
-                    $array[] = $item->toArray();
-                } else {
-                    $array[] = json_decode(json_encode($item), true);
-                }
-            }
-        }
-        if (!empty(static::$unsetFields)) {
-            foreach ($array as $key => $item) {
-                foreach (static::$unsetFields as $field) {
-                    if (isset($item[$field])) {
-                        unset($array[$key][$field]);
-                    }
-                }
-            }
+            $doc = method_exists($items, 'toArray')
+                ? $items->toArray()
+                : json_decode(json_encode($items), true);
+
+            return $strip($doc);
         }
 
-        return $array;
+        return [];
     }
 
-	public function getListFiltered($data): array {
+    public function getListFiltered($data): array {
 		$builder = $this->dm->createQueryBuilder($this->class);
 		$entity = $this->getDocument();
 
@@ -116,6 +120,8 @@ abstract class BaseRepository extends ServiceEntityRepository
 					break;
                 case 'string':
                     $value = trim($value);
+                case 'array':
+                    $value = is_array($value) ? $value : explode(',', $value);
 			}
 
 			$fieldBuilder = $builder->field($key);
@@ -128,10 +134,15 @@ abstract class BaseRepository extends ServiceEntityRepository
 					default => $fieldBuilder->equals($value),
 				};
 			} else {
-				$fieldBuilder->equals($value);
+                if ($type === 'array') {
+                    $fieldBuilder->in($value);
+                } else {
+                    $fieldBuilder->equals($value);
+                }
 			}
 		}
 
-		return $builder->getQuery()->execute()->toArray();
+		$data = $builder->getQuery()->execute();
+        return $this->toArray($data);
 	}
 }
