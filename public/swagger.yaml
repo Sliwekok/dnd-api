@@ -98,7 +98,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
 
-  /spells/:
+  /spell:
     get:
       summary: Get list of spells
       description: >
@@ -111,32 +111,32 @@ paths:
           in: query
           description: Spell level (integer). Supports operators.
           required: false
-          schema: { type: string, example: ">=3" }
+          schema: { type: string, example: ">=7" }
         - name: school
           in: query
           description: Spell school (string).
           required: false
-          schema: { type: string, example: "Evocation" }
+          schema: { type: string }
         - name: actionType
           in: query
           description: Action type (string).
           required: false
-          schema: { type: string, example: "Bonus Action" }
+          schema: { type: string }
         - name: class
           in: query
           description: Filter by classes.
           required: false
-          schema: { type: string, example: "Bonus Action" }
+          schema: { type: string }
         - name: concentration
           in: query
           description: Whether the spell requires concentration (boolean).
           required: false
-          schema: { type: boolean, example: true }
+          schema: { type: boolean }
         - name: ritual
           in: query
           description: Whether the spell can be cast as a ritual (boolean).
           required: false
-          schema: { type: boolean, example: false }
+          schema: { type: boolean }
       responses:
         "200":
           description: List of spells
@@ -151,7 +151,7 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
-  /spells/{item}:
+  /spell/{item}:
     get:
       summary: Get a single spell
       operationId: getSpell
@@ -178,7 +178,6 @@ components:
     Monster:
       type: object
       properties:
-        id: { type: string, example: "64f87caa97de9b001c3a1234" }
         name: { type: string, example: "Goblin" }
         type: { type: string, example: "Humanoid" }
         initiative: { type: integer, example: 2 }
@@ -208,14 +207,11 @@ components:
         traits: { type: array, items: { type: object } }
         description: { type: string, example: "Small, green-skinned humanoid." }
         habitat: { type: array, items: { type: string }, example: ["caves"] }
-        source: { type: string, example: "Monster Manual" }
-        url: { type: string, example: "/monsters/goblin" }
         accepted: { type: boolean, example: true }
         nameGeneric: { type: string, example: "goblin" }
     Spell:
       type: object
       properties:
-        id: { type: string, example: "64f87caa97de9b001c3a5678" }
         name: { type: string, example: "Fireball" }
         nameGeneric: { type: string, example: "fireball" }
         level: { type: integer, example: 3 }
@@ -230,7 +226,6 @@ components:
         classes: { type: array, items: { type: string }, example: ["Wizard", "Sorcerer"] }
         concentration: { type: boolean, example: false }
         ritual: { type: boolean, example: false }
-        accepted: { type: boolean, example: true }
     Error:
       type: object
       properties:
