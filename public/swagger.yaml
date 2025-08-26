@@ -84,7 +84,7 @@ paths:
         - name: item
           in: path
           required: true
-          description: Monster ID or unique slug
+          description: Monster name generic (lowercase, slug)
           schema: { type: string }
       responses:
         "200":
@@ -159,7 +159,7 @@ paths:
         - name: item
           in: path
           required: true
-          description: Spell ID or unique slug
+          description: Spell name generic (lowercase, slug)
           schema: { type: string }
       responses:
         "200":
@@ -207,7 +207,6 @@ components:
         traits: { type: array, items: { type: object } }
         description: { type: string, example: "Small, green-skinned humanoid." }
         habitat: { type: array, items: { type: string }, example: ["caves"] }
-        accepted: { type: boolean, example: true }
         nameGeneric: { type: string, example: "goblin" }
     Spell:
       type: object

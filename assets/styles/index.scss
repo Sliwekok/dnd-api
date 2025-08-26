@@ -134,3 +134,38 @@ a.special {
 .swagger-ui .renderedMarkdown p {
     color: white;
 }
+.swagger-ui .markdown code, .swagger-ui .renderedMarkdown code {
+    color: #0153ff;
+}
+.swagger-ui .opblock-tag.no-desc span,
+.swagger-ui .model-title,
+.swagger-ui .model {
+    color: white;
+}
+
+.swagger-ui .model-box {
+    border: 1px white solid;
+}
+.model-container .model-box .model-box {
+    width: 100% !important;
+}
+
+.swagger-ui section.models .model-box:has(.model-box) {
+    overflow: hidden;
+}
+.swagger-ui .model-box-control {
+    padding: 20px 0px;
+}
+.swagger-ui .model-box-control:focus,
+.swagger-ui .models-control:focus,
+.swagger-ui .opblock-summary-control:focus {
+    outline: none !important;
+}
+
+.swagger-ui .model-box-control,
+.swagger-ui .models-control,
+.swagger-ui .opblock-summary-control {
+    span {
+        color: white !important;
+    }
+}
