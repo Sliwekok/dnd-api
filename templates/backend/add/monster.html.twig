@@ -90,7 +90,19 @@
         </div>
         <button type="button" class="add-item" data-target="#actions-wrapper">Add Action</button>
 
-        <div class="dynamic-list" id="bonusActions-wrapper" data-prototype="{{ form_widget(form.bonusActions.vars.prototype)|e('html_attr') }}">
+        <div class="dynamic-list" id="reactions-wrapper" data-prototype="{{ form_widget(form.reactions.vars.prototype)|e('html_attr') }}">
+            <label>{{ form_label(form.reactions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
+            {% for reaction in form.reactions %}
+                <div class="speed-item">
+                    {{ form_widget(reaction) }}
+                    <button type="button" class="remove-item">-</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="add-item" data-target="#reactions-wrapper">Add Reaction</button>
+
+
+    <div class="dynamic-list" id="bonusActions-wrapper" data-prototype="{{ form_widget(form.bonusActions.vars.prototype)|e('html_attr') }}">
             <label>{{ form_label(form.bonusActions) }}<span class="data-type data-type-select-multiple">(insert multiple)</span></label>
             {% for bonus in form.bonusActions %}
                 <div class="speed-item">
